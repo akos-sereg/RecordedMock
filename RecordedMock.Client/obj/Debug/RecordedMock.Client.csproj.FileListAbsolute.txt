@@ -1,0 +1,13 @@
+Y:\recorded-mock\RecordedMock.Client\RecordedMock.Client\bin\Debug\RecordedMock.Client.dll.config
+Y:\recorded-mock\RecordedMock.Client\RecordedMock.Client\bin\Debug\RecordedMock.Client.dll
+Y:\recorded-mock\RecordedMock.Client\RecordedMock.Client\bin\Debug\RecordedMock.Client.pdb
+Y:\recorded-mock\RecordedMock.Client\RecordedMock.Client\bin\Debug\Castle.Core.dll
+Y:\recorded-mock\RecordedMock.Client\RecordedMock.Client\bin\Debug\Newtonsoft.Json.dll
+Y:\recorded-mock\RecordedMock.Client\RecordedMock.Client\bin\Debug\System.Web.Http.dll
+Y:\recorded-mock\RecordedMock.Client\RecordedMock.Client\bin\Debug\System.Net.Http.Formatting.dll
+Y:\recorded-mock\RecordedMock.Client\RecordedMock.Client\bin\Debug\Castle.Core.xml
+Y:\recorded-mock\RecordedMock.Client\RecordedMock.Client\bin\Debug\Newtonsoft.Json.xml
+Y:\recorded-mock\RecordedMock.Client\RecordedMock.Client\bin\Debug\System.Web.Http.xml
+Y:\recorded-mock\RecordedMock.Client\RecordedMock.Client\bin\Debug\System.Net.Http.Formatting.xml
+Y:\recorded-mock\RecordedMock.Client\RecordedMock.Client\obj\Debug\RecordedMock.Client.dll
+Y:\recorded-mock\RecordedMock.Client\RecordedMock.Client\obj\Debug\RecordedMock.Client.pdb
