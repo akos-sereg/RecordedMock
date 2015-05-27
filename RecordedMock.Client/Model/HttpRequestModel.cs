@@ -10,23 +10,35 @@ namespace RecordedMock.Client.Model
 {
     public class HttpRequestModel
     {
+        public string RecordedAt { get; set; }
+
         public string RequestUri { get; set; }
 
         public IEnumerable<KeyValuePair<string, string>> QueryString { get; set; }
 
         public HttpMethod Method { get; set; }
 
-        public HttpRequestHeaders Headers { get; set; }
+        public Dictionary<string, IEnumerable<string>> Headers { get; set; }
 
-        public HttpContent Content { get; set; }
+        public string Content { get; set; }
+
+        public HttpRequestModel()
+        {
+        }
 
         public HttpRequestModel(HttpRequestMessage request)
         {
+            this.RecordedAt = DateTime.Now.ToString("yyyy-MM-dd hh:mm:ss");
             this.RequestUri = request.RequestUri.ToString();
             this.QueryString = request.GetQueryNameValuePairs();
             this.Method = request.Method;
-            this.Headers = request.Headers;
-            this.Content = request.Content;
+            this.Headers = new Dictionary<string, IEnumerable<string>>();
+            this.Content = request.Content.ReadAsStringAsync().Result;
+
+            foreach (var header in request.Headers)
+            {
+                this.Headers.Add(header.Key, header.Value);
+            }
         }
     }
 }

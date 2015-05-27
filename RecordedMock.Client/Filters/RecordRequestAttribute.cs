@@ -18,7 +18,23 @@ namespace RecordedMock.Client.Filters
         {
             try
             {
-                File.AppendAllText(@"c:\Users\Akos\dump.txt", JsonConvert.SerializeObject(new HttpRequestModel(actionContext.Request)));
+                string file = @"c:\Users\Akos\dump.txt";
+                long length;
+
+                try
+                {
+                    length = new FileInfo(file).Length;
+                }
+                catch (FileNotFoundException)
+                {
+                    length = 0;
+                }
+
+                File.AppendAllText(
+                    file, 
+                    string.Format("{0}{1}", 
+                        length == 0 ? string.Empty : ", ",
+                        JsonConvert.SerializeObject(new HttpRequestModel(actionContext.Request))));
             }
             catch (Exception error)
             {
