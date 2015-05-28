@@ -16,7 +16,7 @@ namespace RecordedMock.Client.Model
 
         public IEnumerable<KeyValuePair<string, string>> QueryString { get; set; }
 
-        public HttpMethod Method { get; set; }
+        public string Method { get; set; }
 
         public Dictionary<string, IEnumerable<string>> Headers { get; set; }
 
@@ -31,7 +31,7 @@ namespace RecordedMock.Client.Model
             this.RecordedAt = DateTime.Now.ToString("yyyy-MM-dd hh:mm:ss");
             this.RequestUri = request.RequestUri.ToString();
             this.QueryString = request.GetQueryNameValuePairs();
-            this.Method = request.Method;
+            this.Method = request.Method.ToString();
             this.Headers = new Dictionary<string, IEnumerable<string>>();
             this.Content = request.Content.ReadAsStringAsync().Result;
 

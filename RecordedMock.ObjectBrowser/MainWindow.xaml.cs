@@ -1,6 +1,7 @@
 ﻿using Microsoft.Win32;
 using Newtonsoft.Json;
 using RecordedMock.Client.Model;
+using RecordedMock.ObjectBrowser.Model;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -40,7 +41,12 @@ namespace RecordedMock.ObjectBrowser
 
                 try
                 {
-                    this.objectGrid.ItemsSource = JsonConvert.DeserializeObject<List<HttpRequestModel>>(serializedObjects);
+                    List<HttpRequestModel> requests = JsonConvert.DeserializeObject<List<HttpRequestModel>>(serializedObjects);
+                    this.objectGrid.ItemsSource = requests;
+
+                    List<ObjectNode> nodes = new List<ObjectNode>();
+                    nodes.Add(new ObjectNode("result", requests[0]));
+                    this.objectTreeView.ItemsSource = nodes;
                 }
                 catch (Exception err)
                 {
