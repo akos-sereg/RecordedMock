@@ -50,8 +50,9 @@
   <ItemGroup>
     <Compile Include="Filters\RecordRequestAttribute.cs" />
     <Compile Include="Model\HttpRequestModel.cs" />
+    <Compile Include="Model\InvocationModel.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Proxy\RecordedMockProxy.cs" />
+    <Compile Include="Proxy\RecordedImplementation.cs" />
     <Compile Include="Proxy\RecordingInterceptor.cs" />
   </ItemGroup>
   <ItemGroup>
