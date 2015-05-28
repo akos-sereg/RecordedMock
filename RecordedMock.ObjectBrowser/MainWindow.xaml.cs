@@ -40,10 +40,7 @@ namespace RecordedMock.ObjectBrowser
 
                 try
                 {
-                    List<HttpRequestModel> requests = JsonConvert.DeserializeObject<List<HttpRequestModel>>(serializedObjects);
-                    //this.objectGrid.Items.Clear();
-                    this.objectGrid.ItemsSource = requests;
-                    //requests.ForEach(x => { this.objectGrid.Items.Add(x); });
+                    this.objectGrid.ItemsSource = JsonConvert.DeserializeObject<List<HttpRequestModel>>(serializedObjects);
                 }
                 catch (Exception err)
                 {
