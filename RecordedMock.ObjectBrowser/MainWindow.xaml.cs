@@ -43,16 +43,19 @@ namespace RecordedMock.ObjectBrowser
                 {
                     List<HttpRequestModel> requests = JsonConvert.DeserializeObject<List<HttpRequestModel>>(serializedObjects);
                     this.objectGrid.ItemsSource = requests;
-
-                    List<ObjectNode> nodes = new List<ObjectNode>();
-                    nodes.Add(new ObjectNode("result", requests[0]));
-                    this.objectTreeView.ItemsSource = nodes;
                 }
                 catch (Exception err)
                 {
                     MessageBox.Show(err.Message);
                 }
             }
+        }
+
+        private void objectGrid_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            List<ObjectNode> nodes = new List<ObjectNode>();
+            nodes.Add(new ObjectNode("Object", this.objectGrid.SelectedItem));
+            this.objectTreeView.ItemsSource = nodes;
         }
     }
 }
