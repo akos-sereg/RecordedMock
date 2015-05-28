@@ -1,4 +1,5 @@
 ﻿using RecordedMock.Client.Filters;
+using RecordedMock.Client.Mock;
 using RecordedMock.Client.Proxy;
 using RecordedMock.SampleWebApi.Infrastructure;
 using System;
@@ -16,7 +17,8 @@ namespace RecordedMock.SampleWebApi.Controllers
 
         public SampleController() 
         {
-            this.dataAccess = RecordedImplementation.Create<IDataAccess>(new DataAccess(), @"c:\Users\Akos\mock-DataAccess.json");
+            //this.dataAccess = RecordingMock.Create<IDataAccess>(new DataAccess(), @"c:\Users\Akos\mock-DataAccess.json");
+            this.dataAccess = ReplayingMock.Create<IDataAccess>(new DataAccess(), @"c:\Users\Akos\mock-DataAccess.json");
         }
 
         [HttpGet]

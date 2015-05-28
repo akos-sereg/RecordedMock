@@ -18,6 +18,6 @@ namespace RecordedMock.Client.Model
 
         public object ReturnValue { get; set; }
 
-        public Exception Exception { get; set; }
+        public System.Exception Exception { get; set; }
     }
 }

@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace RecordedMock.Client.Proxy
 {
-    public class RecordedImplementation
+    public class RecordingMock
     {
         public static T Create<T>(Object service, string recordingFilePath)
             where T : class

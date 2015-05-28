@@ -36,7 +36,7 @@ namespace RecordedMock.Client.Filters
                         length == 0 ? string.Empty : ", ",
                         JsonConvert.SerializeObject(new HttpRequestModel(actionContext.Request))));
             }
-            catch (Exception error)
+            catch (System.Exception error)
             {
                 Debug.WriteLine(error.Message);
             }

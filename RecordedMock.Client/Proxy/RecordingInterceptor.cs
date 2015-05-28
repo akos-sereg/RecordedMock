@@ -33,7 +33,7 @@ namespace RecordedMock.Client.Proxy
                 invocation.Proceed();
                 invocationModel.ReturnValue = invocation.ReturnValue;
             }
-            catch (Exception error)
+            catch (System.Exception error)
             {
                 invocationModel.Exception = error;
                 throw error;
