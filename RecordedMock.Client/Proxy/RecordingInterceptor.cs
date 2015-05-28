@@ -24,6 +24,9 @@ namespace RecordedMock.Client.Proxy
         {
             InvocationModel invocationModel = new InvocationModel();
             invocationModel.Arguments = invocation.Arguments;
+            invocationModel.Namespace = invocation.InvocationTarget.GetType().Namespace;
+            invocationModel.Class = invocation.InvocationTarget.GetType().Name;
+            invocationModel.MethodName = invocation.Method.Name;
 
             try
             {

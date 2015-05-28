@@ -35,7 +35,30 @@
                 </Grid>
             </TabItem>
             <TabItem Header="Captured Invocations on implementation: N/A">
-                <Grid Background="#FFE5E5E5"/>
+                <Grid Background="#FFE5E5E5">
+                    <DataGrid x:Name="invocationGrid" IsReadOnly="True" ColumnWidth="*" AutoGenerateColumns="False" CanUserResizeColumns="True" HorizontalAlignment="Stretch" Margin="10,10,10,330" VerticalAlignment="Stretch" HorizontalGridLinesBrush="#FFF1F1F1" VerticalGridLinesBrush="#FFF0F0F0" BorderThickness="1" SelectionMode="Single" SelectionChanged="invocationGrid_SelectionChanged">
+                        <DataGrid.Columns>
+                            <DataGridTextColumn Binding="{Binding Namespace}" ClipboardContentBinding="{x:Null}" Header="Namespace"/>
+                            <DataGridTextColumn Binding="{Binding Class}" ClipboardContentBinding="{x:Null}" Header="Class"/>
+                            <DataGridTextColumn Binding="{Binding MethodName}" ClipboardContentBinding="{x:Null}" Header="Method"/>
+                        </DataGrid.Columns>
+                    </DataGrid>
+                    <TreeView Name="invocationTreeView" Height="315" Margin="10,0,10,10" VerticalAlignment="Bottom" BorderThickness="0">
+                        <TreeView.Resources>
+                            <HierarchicalDataTemplate DataType="{x:Type models:ObjectNode}" ItemsSource="{Binding Path=Children}">
+                                <TreeViewItem>
+                                    <TreeViewItem.Header>
+                                        <StackPanel Orientation="Horizontal" Margin="-10,0,0,0">
+                                            <TextBlock Text="{Binding Path=Name}"/>
+                                            <TextBlock Text=" : "/>
+                                            <TextBlock Text="{Binding Path=Value}"/>
+                                        </StackPanel>
+                                    </TreeViewItem.Header>
+                                </TreeViewItem>
+                            </HierarchicalDataTemplate>
+                        </TreeView.Resources>
+                    </TreeView>
+                </Grid>
             </TabItem>
         </TabControl>
 

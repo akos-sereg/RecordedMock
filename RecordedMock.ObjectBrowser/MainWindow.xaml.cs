@@ -39,14 +39,20 @@ namespace RecordedMock.ObjectBrowser
 
                 string serializedObjects = string.Format("[ {0} ]", File.ReadAllText(openFileDialog.FileName));
 
-                try
+                // TODO: remove naming convention
+                if (!openFileDialog.FileName.Contains("mock")) 
                 {
+                    // Try parsing input file as Request list
                     List<HttpRequestModel> requests = JsonConvert.DeserializeObject<List<HttpRequestModel>>(serializedObjects);
                     this.objectGrid.ItemsSource = requests;
+                    return;
                 }
-                catch (Exception err)
+                else
                 {
-                    MessageBox.Show(err.Message);
+                    // Try parsing input file as Invocation list on an implementation
+                    List<InvocationModel> invocations = JsonConvert.DeserializeObject<List<InvocationModel>>(serializedObjects);
+                    this.invocationGrid.ItemsSource = invocations;
+                    return;
                 }
             }
         }
@@ -56,6 +62,13 @@ namespace RecordedMock.ObjectBrowser
             List<ObjectNode> nodes = new List<ObjectNode>();
             nodes.Add(new ObjectNode("Object", this.objectGrid.SelectedItem));
             this.objectTreeView.ItemsSource = nodes;
+        }
+
+        private void invocationGrid_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            List<ObjectNode> nodes = new List<ObjectNode>();
+            nodes.Add(new ObjectNode("Object", this.invocationGrid.SelectedItem));
+            this.invocationTreeView.ItemsSource = nodes;
         }
     }
 }
