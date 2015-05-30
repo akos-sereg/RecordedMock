@@ -1,4 +1,7 @@
-﻿using System;
+﻿using Ninject;
+using Ninject.WebApi.DependencyResolver;
+using RecordedMock.SampleWebApi.Infrastructure;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Web;
@@ -15,6 +18,14 @@ namespace RecordedMock.SampleWebApi
         {
             WebApiConfig.Register(GlobalConfiguration.Configuration);
             FilterConfig.RegisterGlobalFilters(GlobalFilters.Filters);
+
+            IKernel kernel = new StandardKernel();
+            kernel.Bind<IDataAccess>().To<DataAccess>().InSingletonScope();
+
+            var resolver = new NinjectDependencyResolver(kernel);
+
+            //Register Resolver for Web Api
+            GlobalConfiguration.Configuration.DependencyResolver = resolver;
         }
     }
 }

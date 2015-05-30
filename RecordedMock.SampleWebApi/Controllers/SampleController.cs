@@ -15,10 +15,10 @@ namespace RecordedMock.SampleWebApi.Controllers
     {
         private IDataAccess dataAccess;
 
-        public SampleController() 
+        public SampleController(IDataAccess dataAccess) 
         {
-            //this.dataAccess = RecordingMock.Create<IDataAccess>(new DataAccess(), @"c:\Users\Akos\mock-DataAccess.json");
-            this.dataAccess = ReplayingMock.Create<IDataAccess>(new DataAccess(), @"c:\Users\Akos\mock-DataAccess.json");
+            this.dataAccess = RecordingMock.Create<IDataAccess>(dataAccess, @"c:\Users\Akos\mock-DataAccess.json");
+            //this.dataAccess = ReplayingMock.Create<IDataAccess>(@"c:\Users\Akos\mock-DataAccess.json");
         }
 
         [HttpGet]

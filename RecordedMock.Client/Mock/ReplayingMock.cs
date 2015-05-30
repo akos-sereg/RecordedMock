@@ -9,10 +9,10 @@ namespace RecordedMock.Client.Mock
 {
     public class ReplayingMock
     {
-        public static T Create<T>(Object service, string mockFilePath)
+        public static T Create<T>(string mockFilePath)
             where T : class
         {
-            return new ProxyGenerator().CreateInterfaceProxyWithTarget<T>((T)service, new ReplayingInterceptor(mockFilePath));
+            return new ProxyGenerator().CreateInterfaceProxyWithoutTarget<T>(new ReplayingInterceptor(mockFilePath));
         }
     }
 }

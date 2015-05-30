@@ -34,6 +34,7 @@ Y:\recorded-mock\RecordedMock.Client\RecordedMock.SampleWebApi\bin\System.Web.We
 Y:\recorded-mock\RecordedMock.Client\RecordedMock.SampleWebApi\bin\Castle.Core.xml
 Y:\recorded-mock\RecordedMock.Client\RecordedMock.SampleWebApi\obj\Debug\RecordedMock.SampleWebApi.dll
 Y:\recorded-mock\RecordedMock.Client\RecordedMock.SampleWebApi\obj\Debug\RecordedMock.SampleWebApi.pdb
+y:\RecordedMock\RecordedMock.SampleWebApi\obj\Debug\RecordedMock.SampleWebApi.csprojResolveAssemblyReference.cache
 y:\RecordedMock\RecordedMock.SampleWebApi\bin\RecordedMock.SampleWebApi.dll
 y:\RecordedMock\RecordedMock.SampleWebApi\bin\RecordedMock.SampleWebApi.pdb
 y:\RecordedMock\RecordedMock.SampleWebApi\bin\Antlr3.Runtime.dll
@@ -67,6 +68,8 @@ y:\RecordedMock\RecordedMock.SampleWebApi\bin\System.Web.WebPages.xml
 y:\RecordedMock\RecordedMock.SampleWebApi\bin\System.Web.WebPages.Deployment.xml
 y:\RecordedMock\RecordedMock.SampleWebApi\bin\System.Web.WebPages.Razor.xml
 y:\RecordedMock\RecordedMock.SampleWebApi\bin\Castle.Core.xml
-y:\RecordedMock\RecordedMock.SampleWebApi\obj\Debug\RecordedMock.SampleWebApi.csprojResolveAssemblyReference.cache
 y:\RecordedMock\RecordedMock.SampleWebApi\obj\Debug\RecordedMock.SampleWebApi.dll
 y:\RecordedMock\RecordedMock.SampleWebApi\obj\Debug\RecordedMock.SampleWebApi.pdb
+y:\RecordedMock\RecordedMock.SampleWebApi\bin\Ninject.dll
+y:\RecordedMock\RecordedMock.SampleWebApi\bin\Ninject.WebApi.DependencyResolver.dll
+y:\RecordedMock\RecordedMock.SampleWebApi\bin\Ninject.xml
