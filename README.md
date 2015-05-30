@@ -5,7 +5,7 @@
 
 **1. Recording**
 
-You can record the behaviour of your original implementation by injecting a decorated instance of your original implementation, using RecordingMock.Create method. The generated proxy instance will capture all input arguments and return values on your  implementation, as well as thrown exceptions.
+You can record the behaviour of your original implementation by injecting a decorated instance of that, using RecordingMock.Create method. The generated proxy instance will capture all input arguments and return values on your  implementation, as well as thrown exceptions.
 
 Example from RecordedMock.SampleWebApi (global.asax.cs)
 ```c#
@@ -20,7 +20,7 @@ After that, you can deploy your code to live environment to collect data that ca
 
 **2. Replaying**
 
-Provided that you have recorded data in previous step, you can inject a replaying mock object that is using the captured data.
+Provided that you have recorded enough data in previous step, you can inject a replaying mock object that is using the captured data.
 
 Example from RecordedMock.SampleWebApi project:
 ```c#
