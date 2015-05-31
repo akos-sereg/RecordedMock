@@ -28,6 +28,12 @@ namespace RecordedMock.Client.Filters
 
         public override void OnActionExecuted(HttpActionExecutedContext actionExecutedContext)
         {
+            // Fire and forget
+            Task.Run(() => { this.StoreRequestProcessing(new HttpProcessingModel(actionExecutedContext.Request, actionExecutedContext.Response)); }).ConfigureAwait(false);
+        }
+
+        private void StoreRequestProcessing(HttpProcessingModel processingModel)
+        {
             try
             {
                 long length;
@@ -53,13 +59,10 @@ namespace RecordedMock.Client.Filters
                         this.DumpFilePath,
                         string.Format("{0}{1}",
                             length == 0 ? string.Empty : ", ",
-                            JsonConvert.SerializeObject(new HttpProcessingModel(actionExecutedContext.Request, actionExecutedContext.Response))));
+                            JsonConvert.SerializeObject(processingModel)));
                 }
             }
-            catch (System.Exception error)
-            {
-                Debug.WriteLine(error.Message);
-            }    
+            catch { }
         }
     }
 }

@@ -7,6 +7,7 @@ using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
 
 namespace RecordedMock.Client.Proxy
@@ -42,11 +43,7 @@ namespace RecordedMock.Client.Proxy
             }
             finally
             {
-                try
-                {
-                    this.StoreInvocation(invocationModel);
-                }
-                catch { }
+                Task.Run(() => { this.StoreInvocation(invocationModel); }).ConfigureAwait(false);   
             }
         }
 
@@ -65,11 +62,15 @@ namespace RecordedMock.Client.Proxy
                     length = 0;
                 }
 
-                File.AppendAllText(
-                    this.RecordingFilePath,
-                    string.Format("{0}{1}",
-                        length == 0 ? string.Empty : ", ",
-                        JsonConvert.SerializeObject(invocationModel)));
+                try
+                {
+                    File.AppendAllText(
+                        this.RecordingFilePath,
+                        string.Format("{0}{1}",
+                            length == 0 ? string.Empty : ", ",
+                            JsonConvert.SerializeObject(invocationModel)));
+                }
+                catch { }
             }
         }
     }
