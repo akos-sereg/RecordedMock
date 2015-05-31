@@ -5,6 +5,7 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
 using System.Linq;
+using System.Net.Http;
 using System.Text;
 using System.Threading.Tasks;
 using System.Web.Http.Controllers;
@@ -14,6 +15,10 @@ namespace RecordedMock.Client.Filters
 {
     public class RecordRequestAttribute : ActionFilterAttribute
     {
+        public const string RequestContentKey = "RecordedMock.Client.Filters.RequestContent";
+
+        public const string ResponseContentKey = "RecordedMock.Client.Filters.ResponseContent";
+
         public string DumpFilePath { get; set; }
 
         public int MaxDumpSize { get; set; }
@@ -26,16 +31,36 @@ namespace RecordedMock.Client.Filters
             this.MaxDumpSize = maxDumpSizeInMbs;
         }
 
-        public override void OnActionExecuted(HttpActionExecutedContext actionExecutedContext)
+        public override void OnActionExecuting(HttpActionContext actionContext)
         {
-            // Fire and forget
-            Task.Run(() => { this.StoreRequestProcessing(new HttpProcessingModel(actionExecutedContext.Request, actionExecutedContext.Response)); }).ConfigureAwait(false);
+            // Request.Content (StreamContent) should be read before processing request, and should be replaced with StringContent, as we are unable to 
+            // rewind StreamContent in OnActionExecuted method, as Request.Content is already read at that time.
+            var contentType = actionContext.Request.Content.Headers.ContentType;
+            var contentInString = actionContext.Request.Content.ReadAsStringAsync().Result;
+            actionContext.Request.Content = new StringContent(contentInString);
+            actionContext.Request.Content.Headers.ContentType = contentType;
+            actionContext.ActionArguments[RequestContentKey] = contentInString;
         }
 
-        private void StoreRequestProcessing(HttpProcessingModel processingModel)
+        public override void OnActionExecuted(HttpActionExecutedContext actionExecutedContext)
+        {
+            // Response.Content should be read before returning. Store method is executed asynchronously, so most probably Response.Content is already disposed 
+            // by the time we are reading it.
+            var contentType = actionExecutedContext.Response.Content.Headers.ContentType;
+            var contentInString = actionExecutedContext.Response.Content.ReadAsStringAsync().Result;
+            actionExecutedContext.Response.Content = new StringContent(contentInString);
+            actionExecutedContext.Response.Content.Headers.ContentType = contentType;
+            actionExecutedContext.ActionContext.ActionArguments[ResponseContentKey] = contentInString;
+
+            // Fire and forget
+            Task.Run(() => { this.StoreRequestProcessing(actionExecutedContext); }).ConfigureAwait(false);
+        }
+
+        private void StoreRequestProcessing(HttpActionExecutedContext actionExecutedContext)
         {
             try
             {
+                HttpProcessingModel processingModel = new HttpProcessingModel(actionExecutedContext);
                 long length;
 
                 lock (this.lockObject)
@@ -62,7 +87,10 @@ namespace RecordedMock.Client.Filters
                             JsonConvert.SerializeObject(processingModel)));
                 }
             }
-            catch { }
+            catch (System.Exception error) 
+            {
+                Debug.WriteLine(error.Message);
+            }
         }
     }
 }
