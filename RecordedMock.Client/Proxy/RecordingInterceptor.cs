@@ -15,6 +15,8 @@ namespace RecordedMock.Client.Proxy
     {
         public string RecordingFilePath { get; set; }
 
+        private Object lockObject = new Object();
+
         public RecordingInterceptor(string recordingFilePath)
         {
             this.RecordingFilePath = recordingFilePath;
@@ -52,20 +54,23 @@ namespace RecordedMock.Client.Proxy
         {
             long length;
 
-            try
+            lock (this.lockObject)
             {
-                length = new FileInfo(this.RecordingFilePath).Length;
-            }
-            catch (FileNotFoundException)
-            {
-                length = 0;
-            }
+                try
+                {
+                    length = new FileInfo(this.RecordingFilePath).Length;
+                }
+                catch (FileNotFoundException)
+                {
+                    length = 0;
+                }
 
-            File.AppendAllText(
-                this.RecordingFilePath,
-                string.Format("{0}{1}",
-                    length == 0 ? string.Empty : ", ",
-                    JsonConvert.SerializeObject(invocationModel)));
+                File.AppendAllText(
+                    this.RecordingFilePath,
+                    string.Format("{0}{1}",
+                        length == 0 ? string.Empty : ", ",
+                        JsonConvert.SerializeObject(invocationModel)));
+            }
         }
     }
 }

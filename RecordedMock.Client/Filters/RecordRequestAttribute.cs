@@ -18,6 +18,8 @@ namespace RecordedMock.Client.Filters
 
         public int MaxDumpSize { get; set; }
 
+        private Object lockObject = new Object();
+
         public RecordRequestAttribute(string dumpFilePath, int maxDumpSizeInMbs)
         {
             this.DumpFilePath = dumpFilePath;
@@ -30,26 +32,29 @@ namespace RecordedMock.Client.Filters
             {
                 long length;
 
-                try
+                lock (this.lockObject)
                 {
-                    length = new FileInfo(this.DumpFilePath).Length;
-                }
-                catch (FileNotFoundException)
-                {
-                    length = 0;
-                }
+                    try
+                    {
+                        length = new FileInfo(this.DumpFilePath).Length;
+                    }
+                    catch (FileNotFoundException)
+                    {
+                        length = 0;
+                    }
 
-                // Stop logging, if log size exceeded maximum size
-                if (length > (this.MaxDumpSize * 1024 * 1024))
-                {
-                    return;
-                }
+                    // Stop logging, if log size exceeded maximum size
+                    if (length > (this.MaxDumpSize * 1024 * 1024))
+                    {
+                        return;
+                    }
 
-                File.AppendAllText(
-                    this.DumpFilePath,
-                    string.Format("{0}{1}",
-                        length == 0 ? string.Empty : ", ",
-                        JsonConvert.SerializeObject(new HttpProcessingModel(actionExecutedContext.Request, actionExecutedContext.Response))));
+                    File.AppendAllText(
+                        this.DumpFilePath,
+                        string.Format("{0}{1}",
+                            length == 0 ? string.Empty : ", ",
+                            JsonConvert.SerializeObject(new HttpProcessingModel(actionExecutedContext.Request, actionExecutedContext.Response))));
+                }
             }
             catch (System.Exception error)
             {
