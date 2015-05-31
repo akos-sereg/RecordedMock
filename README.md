@@ -10,9 +10,11 @@ You can record the behaviour of your original implementation by injecting a deco
 Example from RecordedMock.SampleWebApi (global.asax.cs)
 ```c#
 IKernel kernel = new StandardKernel();
+
 IDataAccess recordingDataAccess = RecordingMock.Create<IDataAccess>(
-  new DataAccess(), 
+  kernel.Get<DataAccess>(), 
   @"C:\path\to\mock\mock-DataAccess.json");
+  
 kernel.Bind<IDataAccess>().ToMethod(context => recordingDataAccess);
 ```
 
