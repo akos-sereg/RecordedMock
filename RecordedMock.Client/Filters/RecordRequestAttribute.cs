@@ -15,9 +15,13 @@ namespace RecordedMock.Client.Filters
 {
     public class RecordRequestAttribute : ActionFilterAttribute
     {
-        public const string RequestContentKey = "RecordedMock.Client.Filters.RequestContent";
+        public const string RequestContentTypeKey = "RecordedMock.Client.Filters.Request.ContentType";
 
-        public const string ResponseContentKey = "RecordedMock.Client.Filters.ResponseContent";
+        public const string RequestContentKey = "RecordedMock.Client.Filters.Request.Content";
+
+        public const string ResponseContentTypeKey = "RecordedMock.Client.Filters.Response.ContentType";
+
+        public const string ResponseContentKey = "RecordedMock.Client.Filters.Response.Content";
 
         public string DumpFilePath { get; set; }
 
@@ -39,6 +43,8 @@ namespace RecordedMock.Client.Filters
             var contentInString = actionContext.Request.Content.ReadAsStringAsync().Result;
             actionContext.Request.Content = new StringContent(contentInString);
             actionContext.Request.Content.Headers.ContentType = contentType;
+
+            actionContext.ActionArguments[RequestContentTypeKey] = contentType == null ? null : contentType.ToString();
             actionContext.ActionArguments[RequestContentKey] = contentInString;
         }
 
@@ -50,6 +56,8 @@ namespace RecordedMock.Client.Filters
             var contentInString = actionExecutedContext.Response.Content.ReadAsStringAsync().Result;
             actionExecutedContext.Response.Content = new StringContent(contentInString);
             actionExecutedContext.Response.Content.Headers.ContentType = contentType;
+
+            actionExecutedContext.ActionContext.ActionArguments[ResponseContentTypeKey] = contentType == null ? null : contentType.ToString();
             actionExecutedContext.ActionContext.ActionArguments[ResponseContentKey] = contentInString;
 
             // Fire and forget

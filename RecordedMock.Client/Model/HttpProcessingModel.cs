@@ -36,6 +36,7 @@ namespace RecordedMock.Client.Model
             this.Request.QueryString = actionExecutedContext.Request.GetQueryNameValuePairs();
             this.Request.Method = actionExecutedContext.Request.Method.ToString();
             this.Request.Headers = new Dictionary<string, IEnumerable<string>>();
+            this.Request.ContentType = (string)actionExecutedContext.ActionContext.ActionArguments[RecordRequestAttribute.RequestContentTypeKey];
             this.Request.Content = (string)actionExecutedContext.ActionContext.ActionArguments[RecordRequestAttribute.RequestContentKey];
 
             foreach (var header in actionExecutedContext.Request.Headers)
@@ -44,6 +45,7 @@ namespace RecordedMock.Client.Model
             }
 
             this.Response = new HttpResponseModel();
+            this.Response.ContentType = (string)actionExecutedContext.ActionContext.ActionArguments[RecordRequestAttribute.ResponseContentTypeKey];
             this.Response.Content = (string)actionExecutedContext.ActionContext.ActionArguments[RecordRequestAttribute.ResponseContentKey];
         }
     }

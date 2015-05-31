@@ -18,6 +18,8 @@ namespace RecordedMock.Client.Model
 
         public Dictionary<string, IEnumerable<string>> Headers { get; set; }
 
+        public string ContentType { get; set; }
+
         public string Content { get; set; }
     }
 }
