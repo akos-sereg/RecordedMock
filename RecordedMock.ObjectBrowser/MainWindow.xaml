@@ -8,16 +8,16 @@
         <TextBox x:Name="objectFilePath" HorizontalAlignment="Left" Height="23" Margin="87,10,0,0" TextWrapping="Wrap" Text="" VerticalAlignment="Top" Width="302"/>
         <Button Content="Open ..." HorizontalAlignment="Left" Margin="405,10,0,0" VerticalAlignment="Top" Width="75" Click="Button_Click_1"/>
         
-        <TabControl Margin="10,41,0,0">
-            <TabItem Header="Captured Requests">
-                <Grid Background="#FFE5E5E5" Margin="10,4,8,10">
-                    <DataGrid x:Name="objectGrid" IsReadOnly="True" ColumnWidth="*" AutoGenerateColumns="False" CanUserResizeColumns="True" HorizontalAlignment="Stretch" Margin="10,10,10,330" VerticalAlignment="Stretch" HorizontalGridLinesBrush="#FFF1F1F1" VerticalGridLinesBrush="#FFF0F0F0" BorderThickness="1" SelectionMode="Single" SelectionChanged="objectGrid_SelectionChanged">
+        <TabControl Margin="10,41,0,0" Background="White">
+            <TabItem Header="Requests">
+                <Grid Background="White" Margin="10,4,8,10">
+                    <DataGrid x:Name="objectGrid" IsReadOnly="True" ColumnWidth="*" AutoGenerateColumns="False" CanUserResizeColumns="True" HorizontalAlignment="Stretch" VerticalAlignment="Top" HorizontalGridLinesBrush="#FFF1F1F1" VerticalGridLinesBrush="#FFF0F0F0" BorderThickness="1" SelectionMode="Single" SelectionChanged="objectGrid_SelectionChanged" Height="228">
                         <DataGrid.Columns>
                             <DataGridTextColumn Binding="{Binding Request.RecordedAt}" ClipboardContentBinding="{x:Null}" Header="Recorded At"/>
                             <DataGridTextColumn Binding="{Binding Request.RequestUri}" ClipboardContentBinding="{x:Null}" Header="Details"/>
                         </DataGrid.Columns>
                     </DataGrid>
-                    <TreeView Name="objectTreeView" Height="315" Margin="10,0,10,10" VerticalAlignment="Bottom" BorderThickness="0">
+                    <TreeView Name="objectTreeView" BorderThickness="0" Margin="0,233,0,0">
                         <TreeView.Resources>
                             <HierarchicalDataTemplate DataType="{x:Type models:ObjectNode}" ItemsSource="{Binding Path=Children}">
                                 <TreeViewItem>
@@ -34,16 +34,16 @@
                     </TreeView>
                 </Grid>
             </TabItem>
-            <TabItem Header="Captured Invocations on implementation: N/A">
-                <Grid Background="#FFE5E5E5">
-                    <DataGrid x:Name="invocationGrid" IsReadOnly="True" ColumnWidth="*" AutoGenerateColumns="False" CanUserResizeColumns="True" HorizontalAlignment="Stretch" Margin="10,10,10,330" VerticalAlignment="Stretch" HorizontalGridLinesBrush="#FFF1F1F1" VerticalGridLinesBrush="#FFF0F0F0" BorderThickness="1" SelectionMode="Single" SelectionChanged="invocationGrid_SelectionChanged">
+            <TabItem Header="Invocations">
+                <Grid Background="White">
+                    <DataGrid x:Name="invocationGrid" IsReadOnly="True" ColumnWidth="*" AutoGenerateColumns="False" CanUserResizeColumns="True" HorizontalAlignment="Stretch" Margin="10,5,10,0" VerticalAlignment="Top" HorizontalGridLinesBrush="#FFF1F1F1" VerticalGridLinesBrush="#FFF0F0F0" BorderThickness="1" SelectionMode="Single" SelectionChanged="invocationGrid_SelectionChanged" Height="224">
                         <DataGrid.Columns>
                             <DataGridTextColumn Binding="{Binding Namespace}" ClipboardContentBinding="{x:Null}" Header="Namespace"/>
                             <DataGridTextColumn Binding="{Binding Class}" ClipboardContentBinding="{x:Null}" Header="Class"/>
                             <DataGridTextColumn Binding="{Binding MethodName}" ClipboardContentBinding="{x:Null}" Header="Method"/>
                         </DataGrid.Columns>
                     </DataGrid>
-                    <TreeView Name="invocationTreeView" Height="315" Margin="10,0,10,10" VerticalAlignment="Bottom" BorderThickness="0">
+                    <TreeView Name="invocationTreeView" Margin="10,234,10,10" BorderThickness="0">
                         <TreeView.Resources>
                             <HierarchicalDataTemplate DataType="{x:Type models:ObjectNode}" ItemsSource="{Binding Path=Children}">
                                 <TreeViewItem>
