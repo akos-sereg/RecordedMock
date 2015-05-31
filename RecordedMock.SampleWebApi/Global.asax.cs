@@ -26,7 +26,7 @@ namespace RecordedMock.SampleWebApi
             IKernel kernel = new StandardKernel();
             kernel.Bind<IDataAccessConfiguration>().To<DataAccessConfiguration>();
 
-            IDataAccess recordingDataAccess = RecordingMock.Create<IDataAccess>(kernel.Get<DataAccess>(), @"C:\Users\Akos\mock-DataAccess.json");
+            IDataAccess recordingDataAccess = RecordingMock.Create<IDataAccess>(kernel.Get<DataAccess>(), @"C:\Users\Akos\mock-DataAccess.json", 10);
             //IDataAccess replayingDataAccess = ReplayingMock.Create<IDataAccess>(@"C:\Users\Akos\mock-DataAccess.json");
 
             kernel.Bind<IDataAccess>().ToMethod(context => recordingDataAccess);

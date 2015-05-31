@@ -16,11 +16,14 @@ namespace RecordedMock.Client.Proxy
     {
         public string RecordingFilePath { get; set; }
 
+        public int MaxDumpSize { get; set; }
+
         private Object lockObject = new Object();
 
-        public RecordingInterceptor(string recordingFilePath)
+        public RecordingInterceptor(string recordingFilePath, int maxDumpSizeInMbs)
         {
             this.RecordingFilePath = recordingFilePath;
+            this.MaxDumpSize = maxDumpSizeInMbs;
         }
 
         public void Intercept(IInvocation invocation)
@@ -60,6 +63,11 @@ namespace RecordedMock.Client.Proxy
                 catch (FileNotFoundException)
                 {
                     length = 0;
+                }
+
+                if (length > (this.MaxDumpSize * 1024 * 1024)) 
+                {
+                    return;
                 }
 
                 try

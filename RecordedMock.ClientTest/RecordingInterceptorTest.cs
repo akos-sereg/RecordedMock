@@ -19,7 +19,7 @@ namespace RecordedMock.ClientTest
             invocation.Setup(x => x.Proceed()).Throws(new ApplicationException());
 
             // Act
-            RecordingInterceptor interceptor = new RecordingInterceptor(Path.GetTempFileName());
+            RecordingInterceptor interceptor = new RecordingInterceptor(Path.GetTempFileName(), 10);
             interceptor.Intercept(invocation.Object);
         }
 
@@ -30,7 +30,7 @@ namespace RecordedMock.ClientTest
             Mock<IInvocation> invocation = new Mock<IInvocation>();
 
             // Act
-            RecordingInterceptor interceptor = new RecordingInterceptor(Path.GetTempFileName());
+            RecordingInterceptor interceptor = new RecordingInterceptor(Path.GetTempFileName(), 10);
             interceptor.Intercept(invocation.Object);
         }
     }

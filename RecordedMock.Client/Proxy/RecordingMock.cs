@@ -9,10 +9,10 @@ namespace RecordedMock.Client.Proxy
 {
     public class RecordingMock
     {
-        public static T Create<T>(Object service, string recordingFilePath)
+        public static T Create<T>(Object service, string recordingFilePath, int maxDumpSizeInMbs)
             where T : class
         {
-            return new ProxyGenerator().CreateInterfaceProxyWithTarget<T>((T)service, new RecordingInterceptor(recordingFilePath));
+            return new ProxyGenerator().CreateInterfaceProxyWithTarget<T>((T)service, new RecordingInterceptor(recordingFilePath, maxDumpSizeInMbs));
         }
     }
 }
