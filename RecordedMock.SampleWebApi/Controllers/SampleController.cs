@@ -11,7 +11,7 @@ using System.Web.Http;
 
 namespace RecordedMock.SampleWebApi.Controllers
 {
-    [RecordRequest(@"C:\Users\Akos\dump.json")]
+    [RecordRequest(@"C:\Users\Akos\dump.json", 1)]
     public class SampleController : ApiController
     {
         private IDataAccess dataAccess;

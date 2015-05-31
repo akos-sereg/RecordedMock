@@ -16,9 +16,12 @@ namespace RecordedMock.Client.Filters
     {
         public string DumpFilePath { get; set; }
 
-        public RecordRequestAttribute(string dumpFilePath)
+        public int MaxDumpSize { get; set; }
+
+        public RecordRequestAttribute(string dumpFilePath, int maxDumpSizeInMbs)
         {
             this.DumpFilePath = dumpFilePath;
+            this.MaxDumpSize = maxDumpSizeInMbs;
         }
 
         public override void OnActionExecuted(HttpActionExecutedContext actionExecutedContext)
@@ -34,6 +37,12 @@ namespace RecordedMock.Client.Filters
                 catch (FileNotFoundException)
                 {
                     length = 0;
+                }
+
+                // Stop logging, if log size exceeded maximum size
+                if (length > (this.MaxDumpSize * 1024 * 1024))
+                {
+                    return;
                 }
 
                 File.AppendAllText(
