@@ -2,10 +2,13 @@
 using Newtonsoft.Json;
 using RecordedMock.Client.Model;
 using RecordedMock.ObjectBrowser.Model;
+using RecordedMock.ObjectBrowser.Resend;
 using System;
 using System.Collections.Generic;
+using System.Collections.Specialized;
 using System.IO;
 using System.Linq;
+using System.Net.Http;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
@@ -30,7 +33,7 @@ namespace RecordedMock.ObjectBrowser
             InitializeComponent();
         }
 
-        private void Button_Click_1(object sender, RoutedEventArgs e)
+        private void Open_Clicked(object sender, RoutedEventArgs e)
         {
             OpenFileDialog openFileDialog = new OpenFileDialog();
             if (openFileDialog.ShowDialog() == true)
@@ -44,7 +47,7 @@ namespace RecordedMock.ObjectBrowser
 
                 if (requests.Count > 0 && requests.First().Type == typeof(HttpProcessingModel).ToString()) 
                 {
-                    this.objectGrid.ItemsSource = requests;
+                    this.requestGrid.ItemsSource = requests;
                 }
                 else if (invocations.Count > 0 && invocations.First().Type == typeof(InvocationModel).ToString()) 
                 {
@@ -56,7 +59,7 @@ namespace RecordedMock.ObjectBrowser
         private void objectGrid_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
             List<ObjectNode> nodes = new List<ObjectNode>();
-            nodes.Add(new ObjectNode("Object", this.objectGrid.SelectedItem));
+            nodes.Add(new ObjectNode("Object", this.requestGrid.SelectedItem));
             this.objectTreeView.ItemsSource = nodes;
         }
 
@@ -65,6 +68,23 @@ namespace RecordedMock.ObjectBrowser
             List<ObjectNode> nodes = new List<ObjectNode>();
             nodes.Add(new ObjectNode("Object", this.invocationGrid.SelectedItem));
             this.invocationTreeView.ItemsSource = nodes;
+        }
+
+        private void Resend_Clicked(object sender, RoutedEventArgs e)
+        {
+            HttpProcessingModel selectedProcessing = (HttpProcessingModel)this.requestGrid.SelectedItem;
+
+            HttpClient client = new HttpClient();
+            
+            try
+            {
+                HttpResponseMessage response = client.SendAsync(new RequestBuilder(selectedProcessing.Request).Build()).Result;
+                MessageBox.Show(response.StatusCode.ToString());
+            }
+            catch (Exception err)
+            {
+                MessageBox.Show(err.Message);
+            }
         }
     }
 }

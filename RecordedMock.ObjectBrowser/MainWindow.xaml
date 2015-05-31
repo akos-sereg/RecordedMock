@@ -6,16 +6,21 @@
     <Grid>
         <Label Content="Object File: " HorizontalAlignment="Left" Margin="10,10,0,0" VerticalAlignment="Top"/>
         <TextBox x:Name="objectFilePath" HorizontalAlignment="Left" Height="23" Margin="87,10,0,0" TextWrapping="Wrap" Text="" VerticalAlignment="Top" Width="302"/>
-        <Button Content="Open ..." HorizontalAlignment="Left" Margin="405,10,0,0" VerticalAlignment="Top" Width="75" Click="Button_Click_1"/>
+        <Button Content="Open ..." HorizontalAlignment="Left" Margin="405,10,0,0" VerticalAlignment="Top" Width="75" Click="Open_Clicked"/>
         
         <TabControl Margin="10,41,0,0" Background="White">
             <TabItem Header="Requests">
                 <Grid Background="White" Margin="10,4,8,10">
-                    <DataGrid x:Name="objectGrid" IsReadOnly="True" ColumnWidth="*" AutoGenerateColumns="False" CanUserResizeColumns="True" HorizontalAlignment="Stretch" VerticalAlignment="Top" HorizontalGridLinesBrush="#FFF1F1F1" VerticalGridLinesBrush="#FFF0F0F0" BorderThickness="1" SelectionMode="Single" SelectionChanged="objectGrid_SelectionChanged" Height="228">
+                    <DataGrid x:Name="requestGrid" IsReadOnly="True" ColumnWidth="*" AutoGenerateColumns="False" CanUserResizeColumns="True" HorizontalAlignment="Stretch" VerticalAlignment="Top" HorizontalGridLinesBrush="#FFF1F1F1" VerticalGridLinesBrush="#FFF0F0F0" BorderThickness="1" SelectionMode="Single" SelectionChanged="objectGrid_SelectionChanged" Height="228">
                         <DataGrid.Columns>
                             <DataGridTextColumn Binding="{Binding Request.RecordedAt}" ClipboardContentBinding="{x:Null}" Header="Recorded At"/>
                             <DataGridTextColumn Binding="{Binding Request.RequestUri}" ClipboardContentBinding="{x:Null}" Header="Details"/>
                         </DataGrid.Columns>
+                        <DataGrid.ContextMenu>
+                            <ContextMenu >
+                                <MenuItem Header="Resend" Click="Resend_Clicked"  />
+                            </ContextMenu>
+                        </DataGrid.ContextMenu>
                     </DataGrid>
                     <TreeView Name="objectTreeView" BorderThickness="0" Margin="0,233,0,0">
                         <TreeView.Resources>
