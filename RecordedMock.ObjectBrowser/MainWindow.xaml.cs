@@ -39,10 +39,10 @@ namespace RecordedMock.ObjectBrowser
 
                 string serializedObjects = string.Format("[ {0} ]", File.ReadAllText(openFileDialog.FileName));
 
-                List<HttpRequestModel> requests = JsonConvert.DeserializeObject<List<HttpRequestModel>>(serializedObjects);
+                List<HttpProcessingModel> requests = JsonConvert.DeserializeObject<List<HttpProcessingModel>>(serializedObjects);
                 List<InvocationModel> invocations = JsonConvert.DeserializeObject<List<InvocationModel>>(serializedObjects);
 
-                if (requests.Count > 0 && requests.First().Type == typeof(HttpRequestModel).ToString()) 
+                if (requests.Count > 0 && requests.First().Type == typeof(HttpProcessingModel).ToString()) 
                 {
                     this.objectGrid.ItemsSource = requests;
                 }

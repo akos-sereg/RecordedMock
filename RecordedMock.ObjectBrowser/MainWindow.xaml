@@ -13,8 +13,8 @@
                 <Grid Background="#FFE5E5E5" Margin="10,4,8,10">
                     <DataGrid x:Name="objectGrid" IsReadOnly="True" ColumnWidth="*" AutoGenerateColumns="False" CanUserResizeColumns="True" HorizontalAlignment="Stretch" Margin="10,10,10,330" VerticalAlignment="Stretch" HorizontalGridLinesBrush="#FFF1F1F1" VerticalGridLinesBrush="#FFF0F0F0" BorderThickness="1" SelectionMode="Single" SelectionChanged="objectGrid_SelectionChanged">
                         <DataGrid.Columns>
-                            <DataGridTextColumn Binding="{Binding RecordedAt}" ClipboardContentBinding="{x:Null}" Header="Recorded At"/>
-                            <DataGridTextColumn Binding="{Binding RequestUri}" ClipboardContentBinding="{x:Null}" Header="Details"/>
+                            <DataGridTextColumn Binding="{Binding Request.RecordedAt}" ClipboardContentBinding="{x:Null}" Header="Recorded At"/>
+                            <DataGridTextColumn Binding="{Binding Request.RequestUri}" ClipboardContentBinding="{x:Null}" Header="Details"/>
                         </DataGrid.Columns>
                     </DataGrid>
                     <TreeView Name="objectTreeView" Height="315" Margin="10,0,10,10" VerticalAlignment="Bottom" BorderThickness="0">

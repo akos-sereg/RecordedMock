@@ -52,7 +52,9 @@
     <Compile Include="Filters\RecordRequestAttribute.cs" />
     <Compile Include="Mock\ReplayingInterceptor.cs" />
     <Compile Include="Mock\ReplayingMock.cs" />
+    <Compile Include="Model\HttpProcessingModel.cs" />
     <Compile Include="Model\HttpRequestModel.cs" />
+    <Compile Include="Model\HttpResponseModel.cs" />
     <Compile Include="Model\InvocationModel.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Proxy\RecordingMock.cs" />

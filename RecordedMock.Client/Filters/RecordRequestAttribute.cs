@@ -21,7 +21,7 @@ namespace RecordedMock.Client.Filters
             this.DumpFilePath = dumpFilePath;
         }
 
-        public override void OnActionExecuting(HttpActionContext actionContext)
+        public override void OnActionExecuted(HttpActionExecutedContext actionExecutedContext)
         {
             try
             {
@@ -37,15 +37,15 @@ namespace RecordedMock.Client.Filters
                 }
 
                 File.AppendAllText(
-                    this.DumpFilePath, 
-                    string.Format("{0}{1}", 
+                    this.DumpFilePath,
+                    string.Format("{0}{1}",
                         length == 0 ? string.Empty : ", ",
-                        JsonConvert.SerializeObject(new HttpRequestModel(actionContext.Request))));
+                        JsonConvert.SerializeObject(new HttpProcessingModel(actionExecutedContext.Request, actionExecutedContext.Response))));
             }
             catch (System.Exception error)
             {
                 Debug.WriteLine(error.Message);
-            }
+            }    
         }
     }
 }
