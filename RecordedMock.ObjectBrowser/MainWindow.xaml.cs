@@ -39,20 +39,16 @@ namespace RecordedMock.ObjectBrowser
 
                 string serializedObjects = string.Format("[ {0} ]", File.ReadAllText(openFileDialog.FileName));
 
-                // TODO: remove naming convention
-                if (!openFileDialog.FileName.Contains("mock")) 
+                List<HttpRequestModel> requests = JsonConvert.DeserializeObject<List<HttpRequestModel>>(serializedObjects);
+                List<InvocationModel> invocations = JsonConvert.DeserializeObject<List<InvocationModel>>(serializedObjects);
+
+                if (requests.Count > 0 && requests.First().Type == typeof(HttpRequestModel).ToString()) 
                 {
-                    // Try parsing input file as Request list
-                    List<HttpRequestModel> requests = JsonConvert.DeserializeObject<List<HttpRequestModel>>(serializedObjects);
                     this.objectGrid.ItemsSource = requests;
-                    return;
                 }
-                else
+                else if (invocations.Count > 0 && invocations.First().Type == typeof(InvocationModel).ToString()) 
                 {
-                    // Try parsing input file as Invocation list on an implementation
-                    List<InvocationModel> invocations = JsonConvert.DeserializeObject<List<InvocationModel>>(serializedObjects);
                     this.invocationGrid.ItemsSource = invocations;
-                    return;
                 }
             }
         }

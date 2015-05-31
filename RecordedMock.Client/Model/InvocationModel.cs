@@ -8,6 +8,8 @@ namespace RecordedMock.Client.Model
 {
     public class InvocationModel
     {
+        public string Type { get; set; }
+
         public string Namespace { get; set; }
         
         public string Class { get; set; }
@@ -19,5 +21,10 @@ namespace RecordedMock.Client.Model
         public object ReturnValue { get; set; }
 
         public System.Exception Exception { get; set; }
+
+        public InvocationModel()
+        {
+            this.Type = typeof(InvocationModel).ToString();
+        }
     }
 }

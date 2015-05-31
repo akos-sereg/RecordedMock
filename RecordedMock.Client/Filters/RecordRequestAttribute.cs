@@ -14,16 +14,22 @@ namespace RecordedMock.Client.Filters
 {
     public class RecordRequestAttribute : ActionFilterAttribute
     {
+        public string DumpFilePath { get; set; }
+
+        public RecordRequestAttribute(string dumpFilePath)
+        {
+            this.DumpFilePath = dumpFilePath;
+        }
+
         public override void OnActionExecuting(HttpActionContext actionContext)
         {
             try
             {
-                string file = @"c:\Users\Akos\dump.txt";
                 long length;
 
                 try
                 {
-                    length = new FileInfo(file).Length;
+                    length = new FileInfo(this.DumpFilePath).Length;
                 }
                 catch (FileNotFoundException)
                 {
@@ -31,7 +37,7 @@ namespace RecordedMock.Client.Filters
                 }
 
                 File.AppendAllText(
-                    file, 
+                    this.DumpFilePath, 
                     string.Format("{0}{1}", 
                         length == 0 ? string.Empty : ", ",
                         JsonConvert.SerializeObject(new HttpRequestModel(actionContext.Request))));

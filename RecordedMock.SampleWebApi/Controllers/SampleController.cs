@@ -11,18 +11,17 @@ using System.Web.Http;
 
 namespace RecordedMock.SampleWebApi.Controllers
 {
+    [RecordRequest(@"C:\Users\Akos\dump.json")]
     public class SampleController : ApiController
     {
         private IDataAccess dataAccess;
 
         public SampleController(IDataAccess dataAccess) 
         {
-            this.dataAccess = RecordingMock.Create<IDataAccess>(dataAccess, @"c:\Users\Akos\mock-DataAccess.json");
-            //this.dataAccess = ReplayingMock.Create<IDataAccess>(@"c:\Users\Akos\mock-DataAccess.json");
+            this.dataAccess = dataAccess;
         }
 
         [HttpGet]
-        [RecordRequest]
         public string DummyAction()
         {
             return this.dataAccess.GetObjectFromDatabase();

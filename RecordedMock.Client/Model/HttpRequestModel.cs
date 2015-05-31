@@ -10,6 +10,8 @@ namespace RecordedMock.Client.Model
 {
     public class HttpRequestModel
     {
+        public string Type { get; set; }
+
         public string RecordedAt { get; set; }
 
         public string RequestUri { get; set; }
@@ -24,9 +26,11 @@ namespace RecordedMock.Client.Model
 
         public HttpRequestModel()
         {
+            this.Type = typeof(HttpRequestModel).ToString();
         }
 
         public HttpRequestModel(HttpRequestMessage request)
+            : this()
         {
             this.RecordedAt = DateTime.Now.ToString("yyyy-MM-dd hh:mm:ss");
             this.RequestUri = request.RequestUri.ToString();
