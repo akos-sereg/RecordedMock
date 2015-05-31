@@ -130,8 +130,10 @@
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
-    <Compile Include="Infrastructure\DataAccess.cs" />
+    <Compile Include="Infrastructure\IDataAccessConfiguration.cs" />
+    <Compile Include="Infrastructure\Implementations\DataAccess.cs" />
     <Compile Include="Infrastructure\IDataAccess.cs" />
+    <Compile Include="Infrastructure\Implementations\DataAccessConfiguration.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>

@@ -3,6 +3,7 @@ using Ninject.WebApi.DependencyResolver;
 using RecordedMock.Client.Mock;
 using RecordedMock.Client.Proxy;
 using RecordedMock.SampleWebApi.Infrastructure;
+using RecordedMock.SampleWebApi.Infrastructure.Implementations;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -23,9 +24,11 @@ namespace RecordedMock.SampleWebApi
 
             // Dependencies
             IKernel kernel = new StandardKernel();
+            kernel.Bind<IDataAccessConfiguration>().To<DataAccessConfiguration>();
 
-            IDataAccess recordingDataAccess = RecordingMock.Create<IDataAccess>(new DataAccess(), @"C:\Users\Akos\mock-DataAccess.json");
+            IDataAccess recordingDataAccess = RecordingMock.Create<IDataAccess>(kernel.Get<DataAccess>(), @"C:\Users\Akos\mock-DataAccess.json");
             //IDataAccess replayingDataAccess = ReplayingMock.Create<IDataAccess>(@"C:\Users\Akos\mock-DataAccess.json");
+
             kernel.Bind<IDataAccess>().ToMethod(context => recordingDataAccess);
 
             //Register Resolver for Web Api
