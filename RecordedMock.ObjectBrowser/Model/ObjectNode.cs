@@ -5,6 +5,7 @@ using System.Linq;
 using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows.Media.Imaging;
 
 namespace RecordedMock.ObjectBrowser.Model
 {
@@ -37,6 +38,13 @@ namespace RecordedMock.ObjectBrowser.Model
 
         public ObjectNode(string name, object value, Type t)
         {
+            if (value is BitmapImage)
+            {
+                this._name = name;
+                this._value = "BitmapImage";
+                return;
+            }
+
             ParseObjectTree(name, value, t);
         }
 
