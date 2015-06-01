@@ -11,10 +11,18 @@
         <TabControl Margin="10,41,0,0" Background="White">
             <TabItem Header="Requests">
                 <Grid Background="White" Margin="10,4,8,10">
-                    <DataGrid x:Name="requestGrid" IsReadOnly="True" ColumnWidth="*" AutoGenerateColumns="False" CanUserResizeColumns="True" HorizontalAlignment="Stretch" VerticalAlignment="Top" HorizontalGridLinesBrush="#FFF1F1F1" VerticalGridLinesBrush="#FFF0F0F0" BorderThickness="1" SelectionMode="Single" SelectionChanged="objectGrid_SelectionChanged" Height="228">
+                    <DataGrid ItemsSource="{Binding Path=., Mode=TwoWay, NotifyOnSourceUpdated=True, UpdateSourceTrigger=PropertyChanged}" x:Name="requestGrid" IsReadOnly="True" ColumnWidth="*" AutoGenerateColumns="False" CanUserResizeColumns="True" HorizontalAlignment="Stretch" VerticalAlignment="Top" HorizontalGridLinesBrush="#FFF1F1F1" VerticalGridLinesBrush="#FFF0F0F0" BorderThickness="1" SelectionMode="Single" SelectionChanged="objectGrid_SelectionChanged" Height="228">
                         <DataGrid.Columns>
-                            <DataGridTextColumn Binding="{Binding Request.RecordedAt}" ClipboardContentBinding="{x:Null}" Header="Recorded At"/>
-                            <DataGridTextColumn Binding="{Binding Request.RequestUri}" ClipboardContentBinding="{x:Null}" Header="Details"/>
+                            <DataGridTemplateColumn Width="20" Header="">
+                                <DataGridTemplateColumn.CellTemplate>
+                                    <DataTemplate>
+                                        <Image HorizontalAlignment="Left" Height="16" Width="16" Source="{Binding Icon}" />
+                                    </DataTemplate>
+                                </DataGridTemplateColumn.CellTemplate>
+                            </DataGridTemplateColumn>
+                            <DataGridTextColumn Binding="{Binding Successful}" ClipboardContentBinding="{x:Null}" Header="Is Successful"/>
+                            <DataGridTextColumn Binding="{Binding RecordedProcessing.Request.RecordedAt}" ClipboardContentBinding="{x:Null}" Header="Recorded At"/>
+                            <DataGridTextColumn Binding="{Binding RecordedProcessing.Request.RequestUri}" ClipboardContentBinding="{x:Null}" Header="Details"/>
                         </DataGrid.Columns>
                         <DataGrid.ContextMenu>
                             <ContextMenu >

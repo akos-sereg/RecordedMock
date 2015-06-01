@@ -28,9 +28,12 @@ namespace RecordedMock.ObjectBrowser
     /// </summary>
     public partial class MainWindow : Window
     {
+        private List<HttpProcessingTestCase> TestCases { get; set; }
+
         public MainWindow()
         {
             InitializeComponent();
+            this.TestCases = new List<HttpProcessingTestCase>();
         }
 
         private void Open_Clicked(object sender, RoutedEventArgs e)
@@ -47,7 +50,9 @@ namespace RecordedMock.ObjectBrowser
 
                 if (requests.Count > 0 && requests.First().Type == typeof(HttpProcessingModel).ToString()) 
                 {
-                    this.requestGrid.ItemsSource = requests;
+                    List<HttpProcessingTestCase> testCases = new List<HttpProcessingTestCase>();
+                    requests.ForEach(x => this.TestCases.Add(new HttpProcessingTestCase { RecordedProcessing = x }));
+                    this.requestGrid.ItemsSource = TestCases;
                 }
                 else if (invocations.Count > 0 && invocations.First().Type == typeof(InvocationModel).ToString()) 
                 {
@@ -70,21 +75,12 @@ namespace RecordedMock.ObjectBrowser
             this.invocationTreeView.ItemsSource = nodes;
         }
 
-        private void Resend_Clicked(object sender, RoutedEventArgs e)
+        private async void Resend_Clicked(object sender, RoutedEventArgs e)
         {
-            HttpProcessingModel selectedProcessing = (HttpProcessingModel)this.requestGrid.SelectedItem;
+            HttpProcessingTestCase selectedTestCase = (HttpProcessingTestCase)this.requestGrid.SelectedItem;
+            bool result = await selectedTestCase.Run();
 
-            HttpClient client = new HttpClient();
-            
-            try
-            {
-                HttpResponseMessage response = client.SendAsync(new RequestBuilder(selectedProcessing.Request).Build()).Result;
-                MessageBox.Show(response.StatusCode.ToString());
-            }
-            catch (Exception err)
-            {
-                MessageBox.Show(err.Message);
-            }
+            selectedTestCase.Successful = result;
         }
     }
 }
