@@ -33,6 +33,9 @@ namespace RecordedMock.ObjectBrowser.Model
             {
                 this.successful = value;
 
+                this.OnPropertyChange("Successful");
+                this.OnPropertyChange("TestStatus");
+
                 if (this.successful == true)
                 {
                     this.Icon = this.ToBitmapImage((Bitmap)Resources.success);
@@ -41,8 +44,14 @@ namespace RecordedMock.ObjectBrowser.Model
                 {
                     this.Icon = this.ToBitmapImage((Bitmap)Resources.failed);
                 }
+            }
+        }
 
-                this.OnPropertyChange("Successful");
+        public string TestStatus
+        {
+            get
+            {
+                return (this.Successful.HasValue ? (this.Successful == true ? "Passed" : "Failed") : string.Empty);
             }
         }
 

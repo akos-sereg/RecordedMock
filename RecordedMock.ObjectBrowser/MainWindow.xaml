@@ -20,7 +20,7 @@
                                     </DataTemplate>
                                 </DataGridTemplateColumn.CellTemplate>
                             </DataGridTemplateColumn>
-                            <DataGridTextColumn Binding="{Binding Successful}" ClipboardContentBinding="{x:Null}" Header="Is Successful"/>
+                            <DataGridTextColumn Binding="{Binding TestStatus}" ClipboardContentBinding="{x:Null}" Header="Status"/>
                             <DataGridTextColumn Binding="{Binding RecordedProcessing.Request.RecordedAt}" ClipboardContentBinding="{x:Null}" Header="Recorded At"/>
                             <DataGridTextColumn Binding="{Binding RecordedProcessing.Request.RequestUri}" ClipboardContentBinding="{x:Null}" Header="Details"/>
                         </DataGrid.Columns>
