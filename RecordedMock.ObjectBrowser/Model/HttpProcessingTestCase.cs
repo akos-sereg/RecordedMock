@@ -33,7 +33,15 @@ namespace RecordedMock.ObjectBrowser.Model
             {
                 this.successful = value;
 
-                this.Icon = this.ToBitmapImage((Bitmap)Resources.success);
+                if (this.successful == true)
+                {
+                    this.Icon = this.ToBitmapImage((Bitmap)Resources.success);
+                }
+                else if (this.successful == false)
+                {
+                    this.Icon = this.ToBitmapImage((Bitmap)Resources.failed);
+                }
+
                 this.OnPropertyChange("Successful");
             }
         }
@@ -56,6 +64,10 @@ namespace RecordedMock.ObjectBrowser.Model
         {
             HttpClient client = new HttpClient();
             HttpResponseMessage response = await client.SendAsync(new RequestBuilder(this.RecordedProcessing.Request).Build());
+
+            string result = response.Content.ReadAsStringAsync().Result;
+            this.Successful = result == this.RecordedProcessing.Response.Content;
+
             return true;
         }
 
