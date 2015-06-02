@@ -69,15 +69,13 @@ namespace RecordedMock.ObjectBrowser.Model
             }
         }
 
-        public async Task<bool> Run()
+        public async Task Run()
         {
             HttpClient client = new HttpClient();
             HttpResponseMessage response = await client.SendAsync(new RequestBuilder(this.RecordedProcessing.Request).Build());
 
             string result = response.Content.ReadAsStringAsync().Result;
             this.Successful = result == this.RecordedProcessing.Response.Content;
-
-            return true;
         }
 
         public event PropertyChangedEventHandler PropertyChanged;

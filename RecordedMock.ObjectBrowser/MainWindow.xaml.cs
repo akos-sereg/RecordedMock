@@ -78,9 +78,7 @@ namespace RecordedMock.ObjectBrowser
         private async void Resend_Clicked(object sender, RoutedEventArgs e)
         {
             HttpProcessingTestCase selectedTestCase = (HttpProcessingTestCase)this.requestGrid.SelectedItem;
-            bool result = await selectedTestCase.Run();
-
-            selectedTestCase.Successful = result;
+            await selectedTestCase.Run();
         }
     }
 }

@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Collections.Specialized;
 using System.Linq;
 using System.Net.Http;
+using System.Net.Http.Headers;
 using System.Text;
 using System.Threading.Tasks;
 using System.Web;
@@ -30,6 +31,15 @@ namespace RecordedMock.ObjectBrowser.Resend
                 {
                     queryString.Add(kvPair.Key, kvPair.Value);
                 }
+            }
+
+            if (this.Request.Headers != null && this.Request.Headers.ContainsKey("Accept"))
+            {
+                this.Request.Headers["Accept"].ToList<string>().ForEach(x =>
+                {
+                    string[] accept = x.Split(new char [] { ';' });
+                    request.Headers.Accept.Add(new MediaTypeWithQualityHeaderValue(accept[0]));
+                });
             }
 
             request.Method = new HttpMethod(this.Request.Method);
