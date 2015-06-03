@@ -23,9 +23,20 @@ namespace RecordedMock.ObjectBrowser.Model
     {
         #region Properties
         
+        /// <summary>
+        /// Details of captured request and response objects.
+        /// </summary>
         public HttpProcessingModel RecordedProcessing { get; set; }
 
+        /// <summary>
+        /// Details of executed (tested) request and its response.
+        /// </summary>
         public HttpProcessingModel TestProcessing { get; set; }
+
+        /// <summary>
+        /// Provides derived properties based on current instance - used by Grid component.
+        /// </summary>
+        public Display Display { get; set; }
 
         private bool? successful;
         public bool? Successful
@@ -96,41 +107,11 @@ namespace RecordedMock.ObjectBrowser.Model
 
         #endregion
 
-        #region Derived properties for display
-
-        public string RequestedAuthority
+        public HttpProcessingTestCase(HttpProcessingModel recordedProcessing)
         {
-            get
-            {
-                try
-                {
-                    Uri requestedUri = new Uri(this.RecordedProcessing.Request.RequestUri);
-                    return requestedUri.Authority;
-                }
-                catch 
-                {
-                    return "(unable to parse url)";
-                }
-            }
+            this.RecordedProcessing = recordedProcessing;
+            this.Display = new Display(this);
         }
-
-        public string RequestedPath
-        {
-            get
-            {
-                try
-                {
-                    Uri requestedUri = new Uri(this.RecordedProcessing.Request.RequestUri);
-                    return requestedUri.LocalPath;
-                }
-                catch
-                {
-                    return "(unable to parse url)";
-                }
-            }
-        }
-
-        #endregion
 
         public async Task Run()
         {

@@ -51,7 +51,7 @@ namespace RecordedMock.ObjectBrowser
                 if (requests.Count > 0 && requests.First().Type == typeof(HttpProcessingModel).ToString()) 
                 {
                     List<HttpProcessingTestCase> testCases = new List<HttpProcessingTestCase>();
-                    requests.ForEach(x => this.TestCases.Add(new HttpProcessingTestCase { RecordedProcessing = x }));
+                    requests.ForEach(x => this.TestCases.Add(new HttpProcessingTestCase(x)));
                     this.requestGrid.ItemsSource = TestCases;
                 }
                 else if (invocations.Count > 0 && invocations.First().Type == typeof(InvocationModel).ToString()) 
