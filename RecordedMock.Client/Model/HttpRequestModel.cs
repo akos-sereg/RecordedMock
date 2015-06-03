@@ -2,7 +2,10 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Net.Http;
 using System.Threading.Tasks;
+using System.Web.Http.Filters;
+using RecordedMock.Client.Filters;
 
 namespace RecordedMock.Client.Model
 {
@@ -21,5 +24,25 @@ namespace RecordedMock.Client.Model
         public string ContentType { get; set; }
 
         public string Content { get; set; }
+
+        public HttpRequestModel()
+        {
+        }
+
+        public HttpRequestModel(HttpActionExecutedContext actionExecutedContext)
+        {
+            this.RecordedAt = DateTime.Now.ToString("yyyy-MM-dd hh:mm:ss");
+            this.RequestUri = actionExecutedContext.Request.RequestUri.ToString();
+            this.QueryString = actionExecutedContext.Request.GetQueryNameValuePairs();
+            this.Method = actionExecutedContext.Request.Method.ToString();
+            this.Headers = new Dictionary<string, IEnumerable<string>>();
+            this.ContentType = (string)actionExecutedContext.ActionContext.ActionArguments[RecordRequestAttribute.RequestContentTypeKey];
+            this.Content = (string)actionExecutedContext.ActionContext.ActionArguments[RecordRequestAttribute.RequestContentKey];
+
+            foreach (var header in actionExecutedContext.Request.Headers)
+            {
+                this.Headers.Add(header.Key, header.Value);
+            }
+        }
     }
 }

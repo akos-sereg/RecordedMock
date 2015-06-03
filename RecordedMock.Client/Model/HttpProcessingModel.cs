@@ -30,23 +30,8 @@ namespace RecordedMock.Client.Model
         public HttpProcessingModel(HttpActionExecutedContext actionExecutedContext)
             : this()
         {
-            this.Request = new HttpRequestModel();
-            this.Request.RecordedAt = DateTime.Now.ToString("yyyy-MM-dd hh:mm:ss");
-            this.Request.RequestUri = actionExecutedContext.Request.RequestUri.ToString();
-            this.Request.QueryString = actionExecutedContext.Request.GetQueryNameValuePairs();
-            this.Request.Method = actionExecutedContext.Request.Method.ToString();
-            this.Request.Headers = new Dictionary<string, IEnumerable<string>>();
-            this.Request.ContentType = (string)actionExecutedContext.ActionContext.ActionArguments[RecordRequestAttribute.RequestContentTypeKey];
-            this.Request.Content = (string)actionExecutedContext.ActionContext.ActionArguments[RecordRequestAttribute.RequestContentKey];
-
-            foreach (var header in actionExecutedContext.Request.Headers)
-            {
-                this.Request.Headers.Add(header.Key, header.Value);
-            }
-
-            this.Response = new HttpResponseModel();
-            this.Response.ContentType = (string)actionExecutedContext.ActionContext.ActionArguments[RecordRequestAttribute.ResponseContentTypeKey];
-            this.Response.Content = (string)actionExecutedContext.ActionContext.ActionArguments[RecordRequestAttribute.ResponseContentKey];
+            this.Request = new HttpRequestModel(actionExecutedContext);
+            this.Response = new HttpResponseModel(actionExecutedContext);
         }
     }
 }

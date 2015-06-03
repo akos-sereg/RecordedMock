@@ -22,6 +22,8 @@ namespace RecordedMock.ObjectBrowser.Model
     {
         public HttpProcessingModel RecordedProcessing { get; set; }
 
+        public HttpResponseModel TestResponse { get; set; }
+
         private bool? successful;
         public bool? Successful
         {
@@ -32,6 +34,7 @@ namespace RecordedMock.ObjectBrowser.Model
             set
             {
                 this.successful = value;
+                this.IsRunningTest = false;
 
                 this.OnPropertyChange("Successful");
                 this.OnPropertyChange("TestStatus");
@@ -47,11 +50,25 @@ namespace RecordedMock.ObjectBrowser.Model
             }
         }
 
+        private bool isRunningTest;
+        public bool IsRunningTest
+        {
+            get
+            {
+                return this.isRunningTest;
+            }
+            set
+            {
+                this.isRunningTest = value;
+                this.OnPropertyChange("TestStatus");
+            }
+        }
+
         public string TestStatus
         {
             get
             {
-                return (this.Successful.HasValue ? (this.Successful == true ? "Passed" : "Failed") : string.Empty);
+                return (this.Successful.HasValue ? (this.Successful == true ? "Passed" : "Failed") : (this.IsRunningTest ? "Running ..." : string.Empty));
             }
         }
 
@@ -71,11 +88,13 @@ namespace RecordedMock.ObjectBrowser.Model
 
         public async Task Run()
         {
+            this.IsRunningTest = true;
+
             HttpClient client = new HttpClient();
             HttpResponseMessage response = await client.SendAsync(new RequestBuilder(this.RecordedProcessing.Request).Build());
+            this.TestResponse = new HttpResponseModel(response);
 
-            string result = response.Content.ReadAsStringAsync().Result;
-            this.Successful = result == this.RecordedProcessing.Response.Content;
+            this.Successful = new HttpProcessingValidator(response, this.RecordedProcessing.Response).Validate();
         }
 
         public event PropertyChangedEventHandler PropertyChanged;
