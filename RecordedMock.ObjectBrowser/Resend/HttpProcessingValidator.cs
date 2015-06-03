@@ -1,4 +1,5 @@
 ﻿using RecordedMock.Client.Model;
+using RecordedMock.ObjectBrowser.Exception;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -10,22 +11,28 @@ namespace RecordedMock.ObjectBrowser.Resend
 {
     public class HttpProcessingValidator
     {
-        public HttpResponseMessage Actual { get; set; }
+        public HttpResponseModel Actual { get; set; }
 
         public HttpResponseModel Expected { get; set; }
 
-        public HttpProcessingValidator(HttpResponseMessage actual, HttpResponseModel expected)
+        public HttpProcessingValidator(HttpResponseModel actual, HttpResponseModel expected)
         {
             this.Actual = actual;
             this.Expected = expected;
         }
 
-        public bool Validate(bool compareContent = true) 
+        public bool Validate(bool compareContent = true, bool compareHeaderContentType = true) 
         {
             if (compareContent && 
-                (this.Actual.Content.ReadAsStringAsync().Result != this.Expected.Content))
+                (this.Actual.Content != this.Expected.Content))
             {
-                return false;
+                throw new HttpProcessingValidationException("Content mismatch.");
+            }
+
+            if (compareHeaderContentType &&
+                (this.Actual.ContentType != this.Expected.ContentType)) 
+            {
+                throw new HttpProcessingValidationException("Header.ContentType mismatch");
             }
 
             return true;

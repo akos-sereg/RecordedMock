@@ -29,6 +29,26 @@ namespace RecordedMock.Client.Model
         {
         }
 
+        public HttpRequestModel(HttpRequestMessage request)
+        {
+            this.RecordedAt = DateTime.Now.ToString("yyyy-MM-dd hh:mm:ss");
+            this.RequestUri = request.RequestUri.ToString();
+            this.QueryString = request.GetQueryNameValuePairs();
+            this.Method = request.Method.ToString();
+            this.Headers = new Dictionary<string, IEnumerable<string>>();
+
+            if (request.Content != null)
+            {
+                this.ContentType = request.Content.Headers.ContentType.MediaType;
+                this.Content = request.Content.ReadAsStringAsync().Result;
+            }
+
+            foreach (var header in request.Headers)
+            {
+                this.Headers.Add(header.Key, header.Value);
+            }
+        }
+
         public HttpRequestModel(HttpActionExecutedContext actionExecutedContext)
         {
             this.RecordedAt = DateTime.Now.ToString("yyyy-MM-dd hh:mm:ss");

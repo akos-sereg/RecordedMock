@@ -1,4 +1,5 @@
 ﻿using RecordedMock.Client.Model;
+using RecordedMock.ObjectBrowser.Exception;
 using RecordedMock.ObjectBrowser.Properties;
 using RecordedMock.ObjectBrowser.Resend;
 using System;
@@ -22,7 +23,7 @@ namespace RecordedMock.ObjectBrowser.Model
     {
         public HttpProcessingModel RecordedProcessing { get; set; }
 
-        public HttpResponseModel TestResponse { get; set; }
+        public HttpProcessingModel TestProcessing { get; set; }
 
         private bool? successful;
         public bool? Successful
@@ -64,11 +65,16 @@ namespace RecordedMock.ObjectBrowser.Model
             }
         }
 
+        public string ValidationError { get; set; }
+
         public string TestStatus
         {
             get
             {
-                return (this.Successful.HasValue ? (this.Successful == true ? "Passed" : "Failed") : (this.IsRunningTest ? "Running ..." : string.Empty));
+                return (this.Successful.HasValue ? (this.Successful == true ? 
+                    "Passed" : 
+                    string.Format("Failed: {0}", this.ValidationError)) 
+                        : (this.IsRunningTest ? "Running ..." : string.Empty));
             }
         }
 
@@ -89,12 +95,28 @@ namespace RecordedMock.ObjectBrowser.Model
         public async Task Run()
         {
             this.IsRunningTest = true;
+            this.ValidationError = null;
 
             HttpClient client = new HttpClient();
-            HttpResponseMessage response = await client.SendAsync(new RequestBuilder(this.RecordedProcessing.Request).Build());
-            this.TestResponse = new HttpResponseModel(response);
 
-            this.Successful = new HttpProcessingValidator(response, this.RecordedProcessing.Response).Validate();
+            // Arrange test processing context
+            this.TestProcessing = new HttpProcessingModel();
+            this.TestProcessing.Request = new HttpRequestModel(new RequestBuilder(this.RecordedProcessing.Request).Build());
+
+            // Get "actual" response
+            HttpResponseMessage response = await client.SendAsync(new RequestBuilder(this.RecordedProcessing.Request).Build());
+            this.TestProcessing.Response = new HttpResponseModel(response);
+
+            try
+            {
+                new HttpProcessingValidator(this.TestProcessing.Response, this.RecordedProcessing.Response).Validate();
+                this.Successful = true;
+            }
+            catch (HttpProcessingValidationException error)
+            {
+                this.ValidationError = error.Message;
+                this.Successful = false;
+            }
         }
 
         public event PropertyChangedEventHandler PropertyChanged;
