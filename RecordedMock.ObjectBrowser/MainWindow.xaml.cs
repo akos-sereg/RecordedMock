@@ -80,5 +80,13 @@ namespace RecordedMock.ObjectBrowser
             HttpProcessingTestCase selectedTestCase = (HttpProcessingTestCase)this.requestGrid.SelectedItem;
             await selectedTestCase.Run();
         }
+
+        private void RunAll_Clicked(object sender, RoutedEventArgs e)
+        {
+            foreach (HttpProcessingTestCase testCase in this.requestGrid.Items)
+            {
+                testCase.Run(); // fire and forget
+            }
+        }
     }
 }
