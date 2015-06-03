@@ -21,7 +21,7 @@ namespace RecordedMock.Client.Model
 
         public HttpResponseModel(HttpResponseMessage response)
         {
-            this.ContentType = response.Content.Headers.ContentType.MediaType;
+            this.ContentType = response.Content.Headers.ContentType.ToString();
             this.Content = response.Content.ReadAsStringAsync().Result;
         }
 

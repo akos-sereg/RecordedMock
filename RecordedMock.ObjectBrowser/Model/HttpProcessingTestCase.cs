@@ -21,6 +21,8 @@ namespace RecordedMock.ObjectBrowser.Model
 {
     public class HttpProcessingTestCase : INotifyPropertyChanged
     {
+        #region Properties
+        
         public HttpProcessingModel RecordedProcessing { get; set; }
 
         public HttpProcessingModel TestProcessing { get; set; }
@@ -91,6 +93,44 @@ namespace RecordedMock.ObjectBrowser.Model
                 this.OnPropertyChange("Icon");
             }
         }
+
+        #endregion
+
+        #region Derived properties for display
+
+        public string RequestedAuthority
+        {
+            get
+            {
+                try
+                {
+                    Uri requestedUri = new Uri(this.RecordedProcessing.Request.RequestUri);
+                    return requestedUri.Authority;
+                }
+                catch 
+                {
+                    return "(unable to parse url)";
+                }
+            }
+        }
+
+        public string RequestedPath
+        {
+            get
+            {
+                try
+                {
+                    Uri requestedUri = new Uri(this.RecordedProcessing.Request.RequestUri);
+                    return requestedUri.LocalPath;
+                }
+                catch
+                {
+                    return "(unable to parse url)";
+                }
+            }
+        }
+
+        #endregion
 
         public async Task Run()
         {

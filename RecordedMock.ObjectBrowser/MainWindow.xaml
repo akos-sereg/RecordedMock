@@ -20,9 +20,10 @@
                                     </DataTemplate>
                                 </DataGridTemplateColumn.CellTemplate>
                             </DataGridTemplateColumn>
-                            <DataGridTextColumn Binding="{Binding TestStatus}" ClipboardContentBinding="{x:Null}" Header="Status"/>
-                            <DataGridTextColumn Binding="{Binding RecordedProcessing.Request.RecordedAt}" ClipboardContentBinding="{x:Null}" Header="Recorded At"/>
-                            <DataGridTextColumn Binding="{Binding RecordedProcessing.Request.RequestUri}" ClipboardContentBinding="{x:Null}" Header="Details"/>
+                            <DataGridTextColumn Width="80" Binding="{Binding TestStatus}" ClipboardContentBinding="{x:Null}" Header="Status"/>
+                            <DataGridTextColumn Width="80" Binding="{Binding RecordedProcessing.Request.Method}" ClipboardContentBinding="{x:Null}" Header="Method"/>
+                            <DataGridTextColumn Width="280" Binding="{Binding RequestedAuthority}" ClipboardContentBinding="{x:Null}" Header="Authority"/>
+                            <DataGridTextColumn Binding="{Binding RequestedPath}" ClipboardContentBinding="{x:Null}" Header="Path"/>
                         </DataGrid.Columns>
                         <DataGrid.ContextMenu>
                             <ContextMenu >
