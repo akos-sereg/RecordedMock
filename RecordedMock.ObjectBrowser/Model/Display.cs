@@ -49,6 +49,22 @@ namespace RecordedMock.ObjectBrowser.Model
             }
         }
 
+        public string RequestedQueryString
+        {
+            get
+            {
+                try
+                {
+                    Uri requestedUri = new Uri(this.testCase.RecordedProcessing.Request.RequestUri);
+                    return requestedUri.Query;
+                }
+                catch
+                {
+                    return "(unable to parse url)";
+                }
+            }
+        }
+
         #endregion
     }
 }

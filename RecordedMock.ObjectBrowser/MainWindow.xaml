@@ -24,6 +24,7 @@
                             <DataGridTextColumn Width="80" Binding="{Binding RecordedProcessing.Request.Method}" ClipboardContentBinding="{x:Null}" Header="Method"/>
                             <DataGridTextColumn Width="280" Binding="{Binding Display.RequestedAuthority}" ClipboardContentBinding="{x:Null}" Header="Authority"/>
                             <DataGridTextColumn Binding="{Binding Display.RequestedPath}" ClipboardContentBinding="{x:Null}" Header="Path"/>
+                            <DataGridTextColumn Binding="{Binding Display.RequestedQueryString}" ClipboardContentBinding="{x:Null}" Header="Query String"/>
                         </DataGrid.Columns>
                         <DataGrid.ContextMenu>
                             <ContextMenu >
