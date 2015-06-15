@@ -35,11 +35,6 @@ namespace RecordedMock.ObjectBrowser
             this.TestCases = new List<HttpProcessingTestCase>();
         }
 
-        public void SetLabel(string label)
-        {
-            this.label1.Content = label;
-        }
-
         public void Load(string fileName)
         {
             string serializedObjects = string.Format("[ {0} ]", File.ReadAllText(fileName));
@@ -52,10 +47,14 @@ namespace RecordedMock.ObjectBrowser
                 List<HttpProcessingTestCase> testCases = new List<HttpProcessingTestCase>();
                 requests.ForEach(x => this.TestCases.Add(new HttpProcessingTestCase(x)));
                 this.requestGrid.ItemsSource = TestCases;
+                this.invocationsTab.IsEnabled = false;
+                this.requestsTab.IsSelected = true;
             }
             else if (invocations.Count > 0 && invocations.First().Type == typeof(InvocationModel).ToString())
             {
                 this.invocationGrid.ItemsSource = invocations;
+                this.requestsTab.IsEnabled = false;
+                this.invocationsTab.IsSelected = true;
             }
 
             this.IsObjectListLoaded = true;

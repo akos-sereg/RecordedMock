@@ -39,13 +39,12 @@ namespace RecordedMock.ObjectBrowser
             _tabItems = new List<TabItem>();
 
             // add a tabItem with + in header 
-            TabItem tabAdd = new TabItem();
-            tabAdd.Header = "+";
-
-            _tabItems.Add(tabAdd);
+            //TabItem tabAdd = new TabItem();
+            //tabAdd.Header = "+";
+            //_tabItems.Add(tabAdd);
 
             // add first tab
-            this.AddTabItem();
+            //this.AddTabItem();
 
             // bind tab control
             this.ObjectTabControl.DataContext = _tabItems;
@@ -64,12 +63,19 @@ namespace RecordedMock.ObjectBrowser
 
             // add controls to tab item, this case I added just a textbox
             ObjectBrowserComponent objectBrowser = new ObjectBrowserComponent();
-            objectBrowser.SetLabel(count.ToString());
             objectBrowser.Name = "objectBrowser";
-            objectBrowser.HorizontalAlignment = System.Windows.HorizontalAlignment.Stretch;
-            objectBrowser.VerticalAlignment = System.Windows.VerticalAlignment.Stretch;
-            tab.HorizontalContentAlignment = System.Windows.HorizontalAlignment.Left;
+            //objectBrowser.HorizontalAlignment = System.Windows.HorizontalAlignment.Stretch;
+            //objectBrowser.VerticalAlignment = System.Windows.VerticalAlignment.Stretch;
+            //tab.HorizontalContentAlignment = System.Windows.HorizontalAlignment.Stretch;
             tab.Content = objectBrowser;
+
+            if (count == 0)
+            {
+                TabItem tabAdd = new TabItem();
+                tabAdd.Header = "+";
+                _tabItems.Add(tabAdd);
+                count++;
+            }
 
             // insert tab item right before the last (+) tab item
             _tabItems.Insert(count - 1, tab);

@@ -5,14 +5,13 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:models="clr-namespace:RecordedMock.ObjectBrowser.Model"
              mc:Ignorable="d" 
-             d:DesignHeight="300" d:DesignWidth="300" >
-    <Grid Margin="0,0,-225,0">
+             d:DesignHeight="300">
+    <Grid Margin="0,0,10,0">
 
-        <TabControl Margin="10,41,10,10" Background="White">
-            <TabItem Header="Requests">
+        <TabControl Margin="10,41,10,10" Background="White" Name="tabControl">
+            <TabItem Header="Requests" Name="requestsTab">
                 <Grid Background="White" Margin="10,4,8,10">
-                    <!-- ItemsSource="{Binding Path=., Mode=TwoWay, NotifyOnSourceUpdated=True, UpdateSourceTrigger=PropertyChanged}" -->
-                    <DataGrid x:Name="requestGrid" IsReadOnly="True" ColumnWidth="*" AutoGenerateColumns="False" CanUserResizeColumns="True" HorizontalAlignment="Stretch" VerticalAlignment="Top" HorizontalGridLinesBrush="#FFF1F1F1" VerticalGridLinesBrush="#FFF0F0F0" BorderThickness="1" SelectionMode="Single" SelectionChanged="objectGrid_SelectionChanged" Height="228">
+                    <DataGrid x:Name="requestGrid" IsReadOnly="True" ColumnWidth="*" AutoGenerateColumns="False" CanUserResizeColumns="True" HorizontalAlignment="Stretch" VerticalAlignment="Top" HorizontalGridLinesBrush="#FFF1F1F1" VerticalGridLinesBrush="#FFF0F0F0" BorderThickness="1" SelectionMode="Single" SelectionChanged="objectGrid_SelectionChanged" Height="203">
                         <DataGrid.Columns>
                             <DataGridTemplateColumn Width="20" Header="">
                                 <DataGridTemplateColumn.CellTemplate>
@@ -50,7 +49,7 @@
                     </TreeView>
                 </Grid>
             </TabItem>
-            <TabItem Header="Invocations">
+            <TabItem Header="Invocations" Name="invocationsTab">
                 <Grid Background="White">
                     <DataGrid x:Name="invocationGrid" IsReadOnly="True" ColumnWidth="*" AutoGenerateColumns="False" CanUserResizeColumns="True" HorizontalAlignment="Stretch" Margin="10,5,10,0" VerticalAlignment="Top" HorizontalGridLinesBrush="#FFF1F1F1" VerticalGridLinesBrush="#FFF0F0F0" BorderThickness="1" SelectionMode="Single" SelectionChanged="invocationGrid_SelectionChanged" Height="224">
                         <DataGrid.Columns>
@@ -78,7 +77,6 @@
             </TabItem>
         </TabControl>
         <Button Content="Run all" HorizontalAlignment="Left" Margin="485,11,0,0" VerticalAlignment="Top" Width="75" Click="RunAll_Clicked"/>
-        <Label Content="Label" Name="label1" HorizontalAlignment="Left" Margin="579,7,0,0" VerticalAlignment="Top"/>
 
     </Grid>
 </UserControl>
