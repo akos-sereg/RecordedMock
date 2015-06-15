@@ -125,17 +125,22 @@ namespace RecordedMock.ObjectBrowser.Model
             this.TestProcessing.Request = new HttpRequestModel(new RequestBuilder(this.RecordedProcessing.Request).Build());
 
             // Get "actual" response
-            HttpResponseMessage response = await client.SendAsync(new RequestBuilder(this.RecordedProcessing.Request).Build());
-            this.TestProcessing.Response = new HttpResponseModel(response);
-
             try
             {
+                HttpResponseMessage response = await client.SendAsync(new RequestBuilder(this.RecordedProcessing.Request).Build());
+                this.TestProcessing.Response = new HttpResponseModel(response);
+
                 new HttpProcessingValidator(this.TestProcessing.Response, this.RecordedProcessing.Response).Validate();
                 this.Successful = true;
             }
             catch (HttpProcessingValidationException error)
             {
                 this.ValidationError = error.Message;
+                this.Successful = false;
+            }
+            catch (System.Exception error)
+            {
+                this.ValidationError = string.Format("Unable to execute: {0}", error.Message);
                 this.Successful = false;
             }
         }

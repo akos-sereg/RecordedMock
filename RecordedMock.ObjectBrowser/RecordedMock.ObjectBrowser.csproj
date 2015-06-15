@@ -63,6 +63,9 @@
     <Compile Include="Exception\HttpProcessingValidationException.cs" />
     <Compile Include="Model\Display.cs" />
     <Compile Include="Model\HttpProcessingTestCase.cs" />
+    <Compile Include="ObjectBrowserComponent.xaml.cs">
+      <DependentUpon>ObjectBrowserComponent.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Properties\Resources.Designer.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
@@ -82,6 +85,10 @@
       <DependentUpon>MainWindow.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
+    <Page Include="ObjectBrowserComponent.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Model\ObjectNode.cs" />
@@ -127,6 +134,16 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="Resources\failed.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resources\icon_remove.gif">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Resource>
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resources\delete.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Resource>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

@@ -10,6 +10,7 @@ using System.IO;
 using System.Linq;
 using System.Net.Http;
 using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
@@ -28,64 +29,125 @@ namespace RecordedMock.ObjectBrowser
     /// </summary>
     public partial class MainWindow : Window
     {
-        private List<HttpProcessingTestCase> TestCases { get; set; }
+        private List<TabItem> _tabItems;
 
         public MainWindow()
         {
             InitializeComponent();
-            this.TestCases = new List<HttpProcessingTestCase>();
+
+            // initialize tabItem array
+            _tabItems = new List<TabItem>();
+
+            // add a tabItem with + in header 
+            TabItem tabAdd = new TabItem();
+            tabAdd.Header = "+";
+
+            _tabItems.Add(tabAdd);
+
+            // add first tab
+            this.AddTabItem();
+
+            // bind tab control
+            this.ObjectTabControl.DataContext = _tabItems;
+            this.ObjectTabControl.SelectedIndex = 0;
         }
 
-        private void Open_Clicked(object sender, RoutedEventArgs e)
+        private TabItem AddTabItem(string filePath = null)
         {
-            OpenFileDialog openFileDialog = new OpenFileDialog();
-            if (openFileDialog.ShowDialog() == true)
+            int count = _tabItems.Count;
+
+            // create new tab item
+            TabItem tab = new TabItem();
+            tab.Header = "n/a";
+            tab.Name = string.Format("tab{0}", count);
+            tab.HeaderTemplate = this.ObjectTabControl.FindResource("TabHeader") as DataTemplate;
+
+            // add controls to tab item, this case I added just a textbox
+            ObjectBrowserComponent objectBrowser = new ObjectBrowserComponent();
+            objectBrowser.SetLabel(count.ToString());
+            objectBrowser.Name = "objectBrowser";
+            objectBrowser.HorizontalAlignment = System.Windows.HorizontalAlignment.Stretch;
+            objectBrowser.VerticalAlignment = System.Windows.VerticalAlignment.Stretch;
+            tab.HorizontalContentAlignment = System.Windows.HorizontalAlignment.Left;
+            tab.Content = objectBrowser;
+
+            // insert tab item right before the last (+) tab item
+            _tabItems.Insert(count - 1, tab);
+
+            return tab;
+        }
+
+        private void tabDynamic_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            TabItem tab = this.ObjectTabControl.SelectedItem as TabItem;
+
+            if (tab != null && tab.Header != null)
             {
-                objectFilePath.Text = openFileDialog.FileName;
-
-                string serializedObjects = string.Format("[ {0} ]", File.ReadAllText(openFileDialog.FileName));
-
-                List<HttpProcessingModel> requests = JsonConvert.DeserializeObject<List<HttpProcessingModel>>(serializedObjects);
-                List<InvocationModel> invocations = JsonConvert.DeserializeObject<List<InvocationModel>>(serializedObjects);
-
-                if (requests.Count > 0 && requests.First().Type == typeof(HttpProcessingModel).ToString()) 
+                if (tab.Header.Equals("+"))
                 {
-                    List<HttpProcessingTestCase> testCases = new List<HttpProcessingTestCase>();
-                    requests.ForEach(x => this.TestCases.Add(new HttpProcessingTestCase(x)));
-                    this.requestGrid.ItemsSource = TestCases;
-                }
-                else if (invocations.Count > 0 && invocations.First().Type == typeof(InvocationModel).ToString()) 
-                {
-                    this.invocationGrid.ItemsSource = invocations;
+                    this.MenuItem_Click_1(null, null);
                 }
             }
         }
 
-        private void objectGrid_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        private void MenuItem_Click_1(object sender, RoutedEventArgs e)
         {
-            List<ObjectNode> nodes = new List<ObjectNode>();
-            nodes.Add(new ObjectNode("Object", this.requestGrid.SelectedItem));
-            this.objectTreeView.ItemsSource = nodes;
-        }
-
-        private void invocationGrid_SelectionChanged(object sender, SelectionChangedEventArgs e)
-        {
-            List<ObjectNode> nodes = new List<ObjectNode>();
-            nodes.Add(new ObjectNode("Object", this.invocationGrid.SelectedItem));
-            this.invocationTreeView.ItemsSource = nodes;
-        }
-
-        private async void Resend_Clicked(object sender, RoutedEventArgs e)
-        {
-            HttpProcessingTestCase selectedTestCase = (HttpProcessingTestCase)this.requestGrid.SelectedItem;
-            await selectedTestCase.Run();
-        }
-
-        private void RunAll_Clicked(object sender, RoutedEventArgs e)
-        {
-            foreach (HttpProcessingTestCase testCase in this.requestGrid.Items)
+            OpenFileDialog openFileDialog = new OpenFileDialog();
+            if (openFileDialog.ShowDialog() != true)
             {
-                testCase.Run(); // fire and forget
+                return;
+            }
+
+            TabItem tabItem = this._tabItems.FirstOrDefault(x => x.Header.ToString() != "x" && x.Content != null && !((ObjectBrowserComponent)x.Content).IsObjectListLoaded);
+            if (tabItem == null)
+            {
+                this.ObjectTabControl.DataContext = null;
+                tabItem = this.AddTabItem(openFileDialog.FileName);
+                this.ObjectTabControl.DataContext = _tabItems;
+                this.ObjectTabControl.SelectedItem = tabItem;
+            }
+            
+            tabItem.Header = System.IO.Path.GetFileName(openFileDialog.FileName);
+            
+            ((ObjectBrowserComponent)tabItem.Content).Load(openFileDialog.FileName);
+        }
+
+        private void btnDelete_Click(object sender, RoutedEventArgs e)
+        {
+            string tabName = (sender as Button).CommandParameter.ToString();
+
+            var item = this.ObjectTabControl.Items.Cast<TabItem>().Where(i => i.Name.Equals(tabName)).SingleOrDefault();
+
+            TabItem tab = item as TabItem;
+
+            if (tab != null)
+            {
+                if (_tabItems.Count < 3)
+                {
+                    MessageBox.Show("Cannot remove last tab.");
+                }
+                else if (MessageBox.Show(string.Format("Are you sure you want to remove the tab '{0}'?", tab.Header.ToString()),
+                    "Remove Tab", MessageBoxButton.YesNo) == MessageBoxResult.Yes)
+                {
+                    // get selected tab
+                    TabItem selectedTab = this.ObjectTabControl.SelectedItem as TabItem;
+
+                    // clear tab control binding
+                    this.ObjectTabControl.DataContext = null;
+
+                    _tabItems.Remove(tab);
+
+                    // bind tab control
+                    this.ObjectTabControl.DataContext = _tabItems;
+
+                    // select previously selected tab. if that is removed then select first tab
+                    if (selectedTab == null || selectedTab.Equals(tab))
+                    {
+                        selectedTab = _tabItems[0];
+                    }
+
+                    this.ObjectTabControl.SelectedItem = selectedTab;
+                }
             }
         }
     }

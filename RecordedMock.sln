@@ -3,11 +3,7 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 2012
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RecordedMock.Client", "RecordedMock.Client\RecordedMock.Client.csproj", "{98BCA04A-9C5B-4E69-865B-C12248EFCA4D}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RecordedMock.SampleWebApi", "RecordedMock.SampleWebApi\RecordedMock.SampleWebApi.csproj", "{78DD693A-E633-4F4F-B35C-A9CA79FB7511}"
-EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RecordedMock.ObjectBrowser", "RecordedMock.ObjectBrowser\RecordedMock.ObjectBrowser.csproj", "{31D9D8CA-362B-409D-A892-14F02C3DBF93}"
-EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RecordedMock.ClientTest", "RecordedMock.ClientTest\RecordedMock.ClientTest.csproj", "{531F696B-9FAD-493B-8D1C-492751308372}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -19,18 +15,10 @@ Global
 		{98BCA04A-9C5B-4E69-865B-C12248EFCA4D}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{98BCA04A-9C5B-4E69-865B-C12248EFCA4D}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{98BCA04A-9C5B-4E69-865B-C12248EFCA4D}.Release|Any CPU.Build.0 = Release|Any CPU
-		{78DD693A-E633-4F4F-B35C-A9CA79FB7511}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{78DD693A-E633-4F4F-B35C-A9CA79FB7511}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{78DD693A-E633-4F4F-B35C-A9CA79FB7511}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{78DD693A-E633-4F4F-B35C-A9CA79FB7511}.Release|Any CPU.Build.0 = Release|Any CPU
 		{31D9D8CA-362B-409D-A892-14F02C3DBF93}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{31D9D8CA-362B-409D-A892-14F02C3DBF93}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{31D9D8CA-362B-409D-A892-14F02C3DBF93}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{31D9D8CA-362B-409D-A892-14F02C3DBF93}.Release|Any CPU.Build.0 = Release|Any CPU
-		{531F696B-9FAD-493B-8D1C-492751308372}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{531F696B-9FAD-493B-8D1C-492751308372}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{531F696B-9FAD-493B-8D1C-492751308372}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{531F696B-9FAD-493B-8D1C-492751308372}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
