@@ -7,7 +7,7 @@
              mc:Ignorable="d">
     <Grid Margin="0,0,10,0">
 
-        <TabControl Margin="10,41,10,10" Background="White" Name="tabControl">
+        <TabControl Margin="10" Background="White" Name="tabControl">
             <TabItem Header="Requests" Name="requestsTab">
                 <Grid Background="White" Margin="10,4,8,10">
                     <DataGrid x:Name="requestGrid" IsReadOnly="True" ColumnWidth="*" AutoGenerateColumns="False" CanUserResizeColumns="True" HorizontalAlignment="Stretch" VerticalAlignment="Top" HorizontalGridLinesBrush="#FFF1F1F1" VerticalGridLinesBrush="#FFF0F0F0" BorderThickness="1" SelectionMode="Extended" SelectionChanged="objectGrid_SelectionChanged" Height="203">
@@ -48,6 +48,8 @@
                             </HierarchicalDataTemplate>
                         </TreeView.Resources>
                     </TreeView>
+                    <Label Content="" Name="requestGridStatusLabel" HorizontalAlignment="Left" Margin="0,205,0,0" VerticalAlignment="Top" RenderTransformOrigin="-0.079,-0.115"/>
+                    <Button Content="Sync to file" Click="Sync_Clicked" HorizontalAlignment="Left" Margin="133,208,0,0" VerticalAlignment="Top" Width="75"/>
                 </Grid>
             </TabItem>
             <TabItem Header="Invocations" Name="invocationsTab">

@@ -25,6 +25,8 @@ namespace RecordedMock.ObjectBrowser
     /// </summary>
     public partial class ObjectBrowserComponent : UserControl
     {
+        private string TestCasesSourceFile { get; set; }
+
         private List<HttpProcessingTestCase> TestCases { get; set; }
 
         public bool IsObjectListLoaded { get; set; }
@@ -37,7 +39,12 @@ namespace RecordedMock.ObjectBrowser
 
         public void Load(string fileName)
         {
-            string serializedObjects = string.Format("[ {0} ]", File.ReadAllText(fileName));
+            string fileContent = File.ReadAllText(fileName);
+            string serializedObjects = fileContent;
+            if (!fileContent.StartsWith("["))
+            {
+                serializedObjects = string.Format("[ {0} ]", File.ReadAllText(fileName));
+            }
 
             List<HttpProcessingModel> requests = JsonConvert.DeserializeObject<List<HttpProcessingModel>>(serializedObjects);
             List<InvocationModel> invocations = JsonConvert.DeserializeObject<List<InvocationModel>>(serializedObjects);
@@ -49,6 +56,8 @@ namespace RecordedMock.ObjectBrowser
                 this.requestGrid.ItemsSource = TestCases;
                 this.invocationsTab.IsEnabled = false;
                 this.requestsTab.IsSelected = true;
+                this.TestCasesSourceFile = fileName;
+                this.UpdateStatusLabel();
             }
             else if (invocations.Count > 0 && invocations.First().Type == typeof(InvocationModel).ToString())
             {
@@ -97,21 +106,55 @@ namespace RecordedMock.ObjectBrowser
                 return;
             }
 
-            var selectedItems = new List<object>();
-            foreach (object selectedItem in this.requestGrid.SelectedItems)
-            {
-                selectedItems.Add(selectedItem);
-            }
-
-            foreach (HttpProcessingTestCase selectedItem in selectedItems) 
+            foreach (HttpProcessingTestCase selectedItem in this.requestGrid.SelectedItems) 
             {
                 this.TestCases.Remove(selectedItem);
             }
 
             this.requestGrid.ItemsSource = null;
             this.requestGrid.ItemsSource = TestCases;
+            this.UpdateStatusLabel();
+        }
+
+        private void Sync_Clicked(object sender, RoutedEventArgs e)
+        {
+            string backupFilePath = string.Format("{0}.backup", this.TestCasesSourceFile);
+
+            try
+            {
+                File.Copy(this.TestCasesSourceFile, backupFilePath);
+
+                List<HttpProcessingModel> requests = new List<HttpProcessingModel>();
+                this.TestCases.ForEach(x => requests.Add(x.RecordedProcessing));
+
+                File.Delete(this.TestCasesSourceFile);
+                File.AppendAllText(this.TestCasesSourceFile, JsonConvert.SerializeObject(requests));
+
+                MessageBox.Show(string.Format("Sync completed, {0} requests written into file {1}.", requests.Count, this.TestCasesSourceFile), "Sync to file", MessageBoxButton.OK, MessageBoxImage.Information);
+            }
+            catch (System.Exception error)
+            {
+                MessageBox.Show(string.Format("Could not sync requests to file: {0}.", error.Message), "Sync to file", MessageBoxButton.OK, MessageBoxImage.Warning);
+
+                if (File.Exists(backupFilePath)) 
+                {
+                    File.Copy(backupFilePath, this.TestCasesSourceFile);
+                }
+            }
+            finally
+            {
+                if (File.Exists(backupFilePath))
+                {
+                    File.Delete(backupFilePath);
+                }
+            }
         }
 
         #endregion
+
+        private void UpdateStatusLabel()
+        {
+            this.requestGridStatusLabel.Content = string.Format("Rows: {0}", this.TestCases != null ? this.TestCases.Count.ToString() : "not loaded");
+        }
     }
 }
