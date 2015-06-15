@@ -23,21 +23,41 @@ namespace RecordedMock.ObjectBrowser.Model
 
         public ObjectNode(object value)
         {
+            if (value == null)
+            {
+                return;
+            }
+
             ParseObjectTree("root", value, value.GetType());
         }
 
         public ObjectNode(string name, object value)
         {
+            if (value == null)
+            {
+                return;
+            }
+
             ParseObjectTree(name, value, value.GetType());
         }
 
         public ObjectNode(object value, Type t)
         {
+            if (value == null)
+            {
+                return;
+            }
+
             ParseObjectTree("root", value, t);
         }
 
         public ObjectNode(string name, object value, Type t)
         {
+            if (value == null)
+            {
+                return;
+            }
+
             if (value is BitmapImage)
             {
                 this._name = name;

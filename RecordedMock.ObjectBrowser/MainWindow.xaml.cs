@@ -64,9 +64,6 @@ namespace RecordedMock.ObjectBrowser
             // add controls to tab item, this case I added just a textbox
             ObjectBrowserComponent objectBrowser = new ObjectBrowserComponent();
             objectBrowser.Name = "objectBrowser";
-            //objectBrowser.HorizontalAlignment = System.Windows.HorizontalAlignment.Stretch;
-            //objectBrowser.VerticalAlignment = System.Windows.VerticalAlignment.Stretch;
-            //tab.HorizontalContentAlignment = System.Windows.HorizontalAlignment.Stretch;
             tab.Content = objectBrowser;
 
             if (count == 0)

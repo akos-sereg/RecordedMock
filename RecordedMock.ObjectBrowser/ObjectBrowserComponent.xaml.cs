@@ -74,18 +74,44 @@ namespace RecordedMock.ObjectBrowser
             this.invocationTreeView.ItemsSource = nodes;
         }
 
-        private async void Resend_Clicked(object sender, RoutedEventArgs e)
-        {
-            HttpProcessingTestCase selectedTestCase = (HttpProcessingTestCase)this.requestGrid.SelectedItem;
-            await selectedTestCase.Run();
-        }
+        #region Request Grid - Context menu items
 
-        private void RunAll_Clicked(object sender, RoutedEventArgs e)
+        private void ResendAll_Clicked(object sender, RoutedEventArgs e)
         {
             foreach (HttpProcessingTestCase testCase in this.requestGrid.Items)
             {
                 testCase.Run(); // fire and forget
             }
         }
+
+        private async void Resend_Clicked(object sender, RoutedEventArgs e)
+        {
+            HttpProcessingTestCase selectedTestCase = (HttpProcessingTestCase)this.requestGrid.SelectedItem;
+            await selectedTestCase.Run();
+        }
+
+        private void Delete_Clicked(object sender, RoutedEventArgs e)
+        {
+            if (this.requestGrid.SelectedItems.Count == 0)
+            {
+                return;
+            }
+
+            var selectedItems = new List<object>();
+            foreach (object selectedItem in this.requestGrid.SelectedItems)
+            {
+                selectedItems.Add(selectedItem);
+            }
+
+            foreach (HttpProcessingTestCase selectedItem in selectedItems) 
+            {
+                this.TestCases.Remove(selectedItem);
+            }
+
+            this.requestGrid.ItemsSource = null;
+            this.requestGrid.ItemsSource = TestCases;
+        }
+
+        #endregion
     }
 }
