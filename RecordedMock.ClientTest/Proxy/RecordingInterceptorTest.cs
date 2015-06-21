@@ -10,7 +10,7 @@ using System.Collections.Generic;
 using RecordedMock.Client.Model;
 using Newtonsoft.Json;
 
-namespace RecordedMock.ClientTest
+namespace RecordedMock.ClientTest.Proxy
 {
     [TestClass]
     public class RecordingInterceptorTest
@@ -69,6 +69,28 @@ namespace RecordedMock.ClientTest
             Thread.Sleep(500); // Interceptor is saving invocation data asynchronously, but we do not have an awaitable async task here
             List<InvocationModel> invocations = JsonConvert.DeserializeObject<List<InvocationModel>>(string.Format("[ {0} ]", File.ReadAllText(tempFilename)));
             Assert.AreEqual(1, invocations.Count, "Second invocation should not be recorded, as RecordingInterceptor is configured for deterministic service");
+        }
+
+        [TestMethod]
+        public void Interceptor_RecordingAllInvocationsInNonDeterministicMode_Works()
+        {
+            // Arrange
+            Mock<IInvocation> invocation = new Mock<IInvocation>();
+            invocation.SetupGet(x => x.Arguments).Returns(new[] { "Param #1", "Param #2" });
+            invocation.SetupGet(x => x.InvocationTarget).Returns(new Object());
+            invocation.SetupGet(x => x.Method).Returns(new Mock<MethodInfo>().Object);
+            invocation.SetupGet(x => x.ReturnValue).Returns("Operation result");
+            string tempFilename = Path.GetTempFileName();
+
+            // Act
+            RecordingInterceptor interceptor = new RecordingInterceptor(tempFilename, 10, false);
+            interceptor.Intercept(invocation.Object);
+            interceptor.Intercept(invocation.Object);
+
+            // Assert
+            Thread.Sleep(500); // Interceptor is saving invocation data asynchronously, but we do not have an awaitable async task here
+            List<InvocationModel> invocations = JsonConvert.DeserializeObject<List<InvocationModel>>(string.Format("[ {0} ]", File.ReadAllText(tempFilename)));
+            Assert.AreEqual(2, invocations.Count, "Second invocation should be recorded, as RecordingInterceptor is configured for non-deterministic service");
         }
     }
 }
