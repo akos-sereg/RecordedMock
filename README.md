@@ -32,3 +32,5 @@ IKernel kernel = new StandardKernel();
 IDataAccess replayingDataAccess = ReplayingMock.Create<IDataAccess>(@"C:\path\to\mock\mock-DataAccess.json");
 kernel.Bind<IDataAccess>().ToMethod(context => replayingDataAccess);
 ```
+
+![Usage](https://github.com/akos-sereg/RecordedMock/blob/master/docs/usage.gif?raw=true "Usage")
