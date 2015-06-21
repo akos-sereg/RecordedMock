@@ -12,8 +12,10 @@ Example from RecordedMock.SampleWebApi (global.asax.cs)
 IKernel kernel = new StandardKernel();
 
 IDataAccess recordingDataAccess = RecordingMock.Create<IDataAccess>(
-  kernel.Get<DataAccess>(), 
-  @"C:\path\to\mock\mock-DataAccess.json");
+  kernel.Get<DataAccess>(), // Original service
+  @"C:\path\to\mock\mock-DataAccess.json", // Recording invocations here
+  10,     // Maximum allowed dump size in MBs
+  true);  // Service's behaviour is deterministic: DataAccess calls provide the same result for the same arguments
   
 kernel.Bind<IDataAccess>().ToMethod(context => recordingDataAccess);
 ```
