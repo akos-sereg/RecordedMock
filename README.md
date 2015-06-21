@@ -54,3 +54,5 @@ kernel.Bind<IDataAccess>().ToMethod(context => replayingDataAccess);
 
 Run RecordedMock.ObjectBrowser, open "C:\Users\Akos\dump.json" file that you captured in step 1.1 (recorded http requests and responses).
 Right click on a request, and click "Resend" or "Resend All" context menu item. Captured request will be resent to your server, and your server's response will be compared to the original (recorded) one to validate that your system's behaviour has not changed.
+
+![Usage](https://github.com/akos-sereg/RecordedMock/blob/master/docs/run-testcase.png?raw=true "Usage")
