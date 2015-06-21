@@ -4,6 +4,7 @@ using RecordedMock.Client.Proxy;
 using System.IO;
 using Moq;
 using Castle.DynamicProxy;
+using System.Reflection;
 
 namespace RecordedMock.ClientTest
 {
@@ -16,10 +17,12 @@ namespace RecordedMock.ClientTest
         {
             // Arrange
             Mock<IInvocation> invocation = new Mock<IInvocation>();
+            invocation.SetupGet(x => x.InvocationTarget).Returns(new Object());
+            invocation.SetupGet(x => x.Method).Returns(new Mock<MethodInfo>().Object);
             invocation.Setup(x => x.Proceed()).Throws(new ApplicationException());
 
             // Act
-            RecordingInterceptor interceptor = new RecordingInterceptor(Path.GetTempFileName(), 10);
+            RecordingInterceptor interceptor = new RecordingInterceptor(Path.GetTempFileName(), 10, true);
             interceptor.Intercept(invocation.Object);
         }
 
@@ -28,9 +31,11 @@ namespace RecordedMock.ClientTest
         {
             // Arrange
             Mock<IInvocation> invocation = new Mock<IInvocation>();
+            invocation.SetupGet(x => x.InvocationTarget).Returns(new Object());
+            invocation.SetupGet(x => x.Method).Returns(new Mock<MethodInfo>().Object);
 
             // Act
-            RecordingInterceptor interceptor = new RecordingInterceptor(Path.GetTempFileName(), 10);
+            RecordingInterceptor interceptor = new RecordingInterceptor(Path.GetTempFileName(), 10, true);
             interceptor.Intercept(invocation.Object);
         }
     }
