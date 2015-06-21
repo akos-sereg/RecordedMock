@@ -46,10 +46,23 @@ namespace RecordedMock.ObjectBrowser
                 serializedObjects = string.Format("[ {0} ]", File.ReadAllText(fileName));
             }
 
-            List<HttpProcessingModel> requests = JsonConvert.DeserializeObject<List<HttpProcessingModel>>(serializedObjects);
-            List<InvocationModel> invocations = JsonConvert.DeserializeObject<List<InvocationModel>>(serializedObjects);
+            // Try parsing file as HttpProcessingModel list
+            List<HttpProcessingModel> requests = null;
+            try
+            {
+                requests = JsonConvert.DeserializeObject<List<HttpProcessingModel>>(serializedObjects);
+            }
+            catch { }
 
-            if (requests.Count > 0 && requests.First().Type == typeof(HttpProcessingModel).ToString())
+            // Try parsing file as InvocationModel list
+            List<InvocationModel> invocations = null;
+            try
+            {
+                invocations = JsonConvert.DeserializeObject<List<InvocationModel>>(serializedObjects);
+            }
+            catch { }
+
+            if (requests != null && requests.Count > 0 && requests.First().Type == typeof(HttpProcessingModel).ToString())
             {
                 List<HttpProcessingTestCase> testCases = new List<HttpProcessingTestCase>();
                 requests.ForEach(x => this.TestCases.Add(new HttpProcessingTestCase(x)));
@@ -59,11 +72,15 @@ namespace RecordedMock.ObjectBrowser
                 this.TestCasesSourceFile = fileName;
                 this.UpdateStatusLabel();
             }
-            else if (invocations.Count > 0 && invocations.First().Type == typeof(InvocationModel).ToString())
+            else if (invocations != null && invocations.Count > 0 && invocations.First().Type == typeof(InvocationModel).ToString())
             {
                 this.invocationGrid.ItemsSource = invocations;
                 this.requestsTab.IsEnabled = false;
                 this.invocationsTab.IsSelected = true;
+            }
+            else
+            {
+                MessageBox.Show("Unable to parse object file", "Parse object file", MessageBoxButton.OK, MessageBoxImage.Warning);
             }
 
             this.IsObjectListLoaded = true;
@@ -127,8 +144,14 @@ namespace RecordedMock.ObjectBrowser
                 List<HttpProcessingModel> requests = new List<HttpProcessingModel>();
                 this.TestCases.ForEach(x => requests.Add(x.RecordedProcessing));
 
+                string serializedList = JsonConvert.SerializeObject(requests);
+                if (serializedList.Length > 0)
+                {
+                    serializedList = serializedList.Substring(1, serializedList.Length - 2);
+                }
+
                 File.Delete(this.TestCasesSourceFile);
-                File.AppendAllText(this.TestCasesSourceFile, JsonConvert.SerializeObject(requests));
+                File.AppendAllText(this.TestCasesSourceFile, serializedList);
 
                 MessageBox.Show(string.Format("Sync completed, {0} requests written into file {1}.", requests.Count, this.TestCasesSourceFile), "Sync to file", MessageBoxButton.OK, MessageBoxImage.Information);
             }
