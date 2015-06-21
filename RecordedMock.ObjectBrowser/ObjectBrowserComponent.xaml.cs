@@ -43,7 +43,7 @@ namespace RecordedMock.ObjectBrowser
             string serializedObjects = fileContent;
             if (!fileContent.StartsWith("["))
             {
-                serializedObjects = string.Format("[ {0} ]", File.ReadAllText(fileName));
+                serializedObjects = string.Format("[ {0} ]", fileContent);
             }
 
             // Try parsing file as HttpProcessingModel list

@@ -18,12 +18,15 @@ namespace RecordedMock.Client.Proxy
 
         public int MaxDumpSize { get; set; }
 
+        public bool IsDeterministic { get; set; }
+
         private Object lockObject = new Object();
 
-        public RecordingInterceptor(string recordingFilePath, int maxDumpSizeInMbs)
+        public RecordingInterceptor(string recordingFilePath, int maxDumpSizeInMbs, bool isDeterministic)
         {
             this.RecordingFilePath = recordingFilePath;
             this.MaxDumpSize = maxDumpSizeInMbs;
+            this.IsDeterministic = isDeterministic;
         }
 
         public void Intercept(IInvocation invocation)
@@ -58,6 +61,11 @@ namespace RecordedMock.Client.Proxy
             {
                 try
                 {
+                    if (this.IsDeterministic && this.IsAlreadyRecorded(invocationModel))
+                    {
+                        return;
+                    }
+
                     length = new FileInfo(this.RecordingFilePath).Length;
                 }
                 catch (FileNotFoundException)
@@ -80,6 +88,30 @@ namespace RecordedMock.Client.Proxy
                 }
                 catch { }
             }
+        }
+
+        private bool IsAlreadyRecorded(InvocationModel invocationModel)
+        {
+            string fileContent = File.ReadAllText(this.RecordingFilePath);
+            string serializedObjects = fileContent;
+            if (!fileContent.StartsWith("["))
+            {
+                serializedObjects = string.Format("[ {0} ]", fileContent);
+            }
+
+            List<InvocationModel> invocations = null;
+            try
+            {
+                invocations = JsonConvert.DeserializeObject<List<InvocationModel>>(serializedObjects);
+            }
+            catch { }
+
+            if (invocations != null)
+            {
+                return invocations.FindAll(x => JsonConvert.SerializeObject(x.Arguments) == JsonConvert.SerializeObject(invocationModel.Arguments)).Count > 0;
+            }
+
+            return false;
         }
     }
 }
